@@ -23,7 +23,7 @@ RUN npm run build
 FROM node:18-alpine AS production
 
 # Add labels for container registry
-LABEL org.opencontainers.image.source="https://github.com/your-org/api-predict"
+LABEL org.opencontainers.image.source="https://github.com/hectorcanaimero/api-predict"
 LABEL org.opencontainers.image.description="Emarsys CPF Recommendations Scraper API"
 LABEL org.opencontainers.image.licenses="MIT"
 
