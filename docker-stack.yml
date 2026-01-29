@@ -1,0 +1,180 @@
+version: "3.8"
+
+services:
+  # ===========================================
+  # Traefik - Reverse Proxy & Load Balancer
+  # ===========================================
+  traefik:
+    image: traefik:v3.0
+    command:
+      # API and Dashboard
+      - "--api.dashboard=true"
+      - "--api.insecure=false"
+      # Docker Swarm provider
+      - "--providers.swarm=true"
+      - "--providers.swarm.exposedByDefault=false"
+      - "--providers.swarm.network=traefik-public"
+      - "--providers.swarm.endpoint=unix:///var/run/docker.sock"
+      # Entrypoints
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      # HTTP to HTTPS redirect
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+      # Let's Encrypt
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge=true"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL:-admin@example.com}"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+      # Logs
+      - "--log.level=INFO"
+      - "--accesslog=true"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik-certificates:/letsencrypt
+    networks:
+      - traefik-public
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        # Dashboard
+        - "traefik.enable=true"
+        - "traefik.http.routers.traefik-dashboard.rule=Host(`traefik.${DOMAIN:-localhost}`)"
+        - "traefik.http.routers.traefik-dashboard.entrypoints=websecure"
+        - "traefik.http.routers.traefik-dashboard.tls.certresolver=letsencrypt"
+        - "traefik.http.routers.traefik-dashboard.service=api@internal"
+        - "traefik.http.routers.traefik-dashboard.middlewares=traefik-auth"
+        # Dashboard Auth (user: admin, password: admin - change in production!)
+        - "traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIK_DASHBOARD_CREDENTIALS:-admin:$$apr1$$xyz$$hashedpassword}"
+        - "traefik.http.services.traefik-dashboard.loadbalancer.server.port=8080"
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+
+  # ===========================================
+  # Redis - Queue & Cache
+  # ===========================================
+  redis:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis-data:/data
+    networks:
+      - internal
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # ===========================================
+  # API Predict - Main Application
+  # ===========================================
+  api-predict:
+    image: ghcr.io/hectorcanaimero/api-predict:${API_VERSION:-latest}
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+      - API_KEYS=${API_KEYS}
+      - EMARSYS_SCARAB_ID=${EMARSYS_SCARAB_ID:-1916F613C8B45191}
+      - SCRAPING_TIMEOUT=${SCRAPING_TIMEOUT:-60000}
+      - CACHE_TTL=${CACHE_TTL:-3600}
+    networks:
+      - traefik-public
+      - internal
+    deploy:
+      mode: replicated
+      replicas: ${API_REPLICAS:-2}
+      labels:
+        - "traefik.enable=true"
+        # HTTP Router
+        - "traefik.http.routers.api-predict.rule=Host(`api.${DOMAIN:-localhost}`)"
+        - "traefik.http.routers.api-predict.entrypoints=websecure"
+        - "traefik.http.routers.api-predict.tls.certresolver=letsencrypt"
+        - "traefik.http.routers.api-predict.service=api-predict"
+        # Middlewares
+        - "traefik.http.routers.api-predict.middlewares=api-ratelimit,api-headers"
+        # Service
+        - "traefik.http.services.api-predict.loadbalancer.server.port=3000"
+        - "traefik.http.services.api-predict.loadbalancer.healthcheck.path=/api/scraping/stats"
+        - "traefik.http.services.api-predict.loadbalancer.healthcheck.interval=10s"
+        - "traefik.http.services.api-predict.loadbalancer.sticky.cookie=true"
+        - "traefik.http.services.api-predict.loadbalancer.sticky.cookie.name=api_session"
+        # Rate Limiting
+        - "traefik.http.middlewares.api-ratelimit.ratelimit.average=100"
+        - "traefik.http.middlewares.api-ratelimit.ratelimit.burst=50"
+        - "traefik.http.middlewares.api-ratelimit.ratelimit.period=1m"
+        # Security Headers
+        - "traefik.http.middlewares.api-headers.headers.framedeny=true"
+        - "traefik.http.middlewares.api-headers.headers.browserxssfilter=true"
+        - "traefik.http.middlewares.api-headers.headers.contenttypenosniff=true"
+        - "traefik.http.middlewares.api-headers.headers.customresponseheaders.X-Powered-By="
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: rollback
+        order: start-first
+      rollback_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/scraping/stats"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  traefik-public:
+    driver: overlay
+    attachable: true
+  internal:
+    driver: overlay
+    internal: true
+
+volumes:
+  traefik-certificates:
+  redis-data:
