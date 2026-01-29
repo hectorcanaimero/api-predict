@@ -7,15 +7,20 @@ WORKDIR /app
 
 # Copy package files
 COPY package*.json ./
+COPY nest-cli.json ./
+COPY tsconfig.json ./
 
 # Install all dependencies (including devDependencies for build)
 RUN npm ci
 
 # Copy source code
-COPY . .
+COPY src ./src
 
 # Build the application
 RUN npm run build
+
+# Verify build output
+RUN ls -la dist/ && test -f dist/main.js
 
 # ================================
 # Stage 2: Production
@@ -50,12 +55,17 @@ ENV PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium-browser
 ENV NODE_ENV=production
 ENV PORT=3000
 
-# Copy package files and install production dependencies only
+# Copy package files
 COPY package*.json ./
-RUN npm ci --only=production && npm cache clean --force
+
+# Install production dependencies only (new npm syntax)
+RUN npm ci --omit=dev && npm cache clean --force
 
 # Copy built application from builder stage
 COPY --from=builder /app/dist ./dist
+
+# Verify the main.js exists
+RUN ls -la dist/ && test -f dist/main.js
 
 # Change ownership to non-root user
 RUN chown -R nestjs:nodejs /app
@@ -71,4 +81,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:3000/api/scraping/stats || exit 1
 
 # Start the application
-CMD ["node", "dist/main"]
+CMD ["node", "dist/main.js"]
