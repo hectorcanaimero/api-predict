@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+  <html>
+    <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title>exclude rules demo</title>
+
+      <style></style>
+    </head>
+    <body>
+      <script>
+        var ScarabQueue = ScarabQueue || [];
+        (function (id) {
+          if (document.getElementById(id)) return;
+          var js = document.createElement('script');
+          js.id = id;
+          js.src = '//cdn.scarabresearch.com/js/1916F613C8B45191/scarab-v2.js';
+          var fs = document.getElementsByTagName('script')[0];
+          fs.parentNode.insertBefore(js, fs);
+        })('scarab-js-api');
+      </script>
+
+      <script type="text/html" id="simple-tmpl">
+        <![CDATA[ {{ for (var i=0; i < SC.page.products.length; i++) { }} {{ var p =
+        SC.page.products[i]; }} <div data-scarabitem="{{= p.id }}" class="scarab-item"> id:
+        <strong>{{=p.id}}</strong> <img src="{{=p.image}}" width="50"> category: {{=p.category}}
+        </div> {{ } }} ]]>
+      </script>
+
+      <h2>unfiltered</h2>
+      <div id="recs"></div>
+      <h2>do not recommend items '2540' and '2538'</h2>
+      <div id="filtered-recs-id"></div>
+      <h2>only recommend a certain category</h2>
+      <div id="filtered-recs-cat"></div>
+
+      <script>
+        // no filter, just get recs
+        ScarabQueue.push(['view', '2542']);
+        ScarabQueue.push([
+          'recommend',
+          'RELATED',
+          'recs',
+          5,
+          document.getElementById('simple-tmpl').innerHTML,
+        ]);
+        ScarabQueue.push(['go']);
+
+        // do not recommend items '2540' and '2538'
+        ScarabQueue.push(['exclude', 'item', 'in', ['2540', '2538']]);
+        ScarabQueue.push(['view', '2526']);
+        ScarabQueue.push([
+          'recommend',
+          'RELATED_2',
+          'filtered-recs-id',
+          3,
+          document.getElementById('simple-tmpl').innerHTML,
+        ]);
+        ScarabQueue.push(['go']);
+
+        // only recommend a certain category
+        ScarabQueue.push(['include', 'category', 'has', 'WOMEN>Coats & Jackets']);
+        ScarabQueue.push(['view', '2435']);
+        ScarabQueue.push([
+          'recommend',
+          'RELATED_3',
+          'filtered-recs-cat',
+          3,
+          document.getElementById('simple-tmpl').innerHTML,
+        ]);
+        ScarabQueue.push(['go']);
+      </script>
+    </body>
+  </html>
+</html>

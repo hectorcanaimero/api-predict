@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf8" />
+  <title>Emarsys CPF Recommendations API</title>
+  <!-- needed for adaptive design -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+    }
+  </style>
+  <script src="https://cdn.redocly.com/redoc/v2.5.0/bundles/redoc.standalone.js"></script><style data-styled="true" data-styled-version="6.3.8">.kjDhDB{width:calc(100% - 40%);padding:0 40px;}/*!sc*/
+@media print,screen and (max-width: 75rem){.kjDhDB{width:100%;padding:40px 40px;}}/*!sc*/
+.dXbdRp{width:calc(100% - 40%);padding:0 40px;}/*!sc*/
+@media print,screen and (max-width: 75rem){.dXbdRp{width:100%;padding:0px 40px;}}/*!sc*/
+data-styled.g4[id="sc-hLQRIK"]{content:"kjDhDB,dXbdRp,"}/*!sc*/
+.gCBDNw{padding:40px 0;}/*!sc*/
+.gCBDNw:last-child{min-height:calc(100vh + 1px);}/*!sc*/
+.gCBDNw>.gCBDNw:last-child{min-height:initial;}/*!sc*/
+@media print,screen and (max-width: 75rem){.gCBDNw{padding:0;}}/*!sc*/
+.kHlVgP{padding:40px 0;position:relative;}/*!sc*/
+.kHlVgP:last-child{min-height:calc(100vh + 1px);}/*!sc*/
+.kHlVgP>.kHlVgP:last-child{min-height:initial;}/*!sc*/
+@media print,screen and (max-width: 75rem){.kHlVgP{padding:0;}}/*!sc*/
+.kHlVgP:not(:last-of-type):after{position:absolute;bottom:0;width:100%;display:block;content:'';border-bottom:1px solid rgba(0, 0, 0, 0.2);}/*!sc*/
+data-styled.g5[id="sc-eDLJxb"]{content:"gCBDNw,kHlVgP,"}/*!sc*/
+.gzZFRd{width:40%;color:#ffffff;background-color:#263238;padding:0 40px;}/*!sc*/
+@media print,screen and (max-width: 75rem){.gzZFRd{width:100%;padding:40px 40px;}}/*!sc*/
+data-styled.g6[id="sc-jTQDnk"]{content:"gzZFRd,"}/*!sc*/
+.bTNKSN{background-color:#263238;}/*!sc*/
+data-styled.g7[id="sc-gLLvbB"]{content:"bTNKSN,"}/*!sc*/
+.kzumiI{display:flex;width:100%;padding:0;}/*!sc*/
+@media print,screen and (max-width: 75rem){.kzumiI{flex-direction:column;}}/*!sc*/
+data-styled.g8[id="sc-iBdmCa"]{content:"kzumiI,"}/*!sc*/
+.exLoZF{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-weight:400;font-size:1.85714em;line-height:1.6em;color:#333333;}/*!sc*/
+data-styled.g9[id="sc-fsYeqr"]{content:"exLoZF,"}/*!sc*/
+.ebZkXj{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-weight:400;font-size:1.57143em;line-height:1.6em;color:#333333;margin:0 0 20px;}/*!sc*/
+data-styled.g10[id="sc-qZqnL"]{content:"ebZkXj,"}/*!sc*/
+.dVDDPa{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-weight:400;font-size:1.27em;line-height:1.6em;color:#333333;}/*!sc*/
+data-styled.g11[id="sc-jsEegq"]{content:"dVDDPa,"}/*!sc*/
+.kEEgVT{color:#ffffff;}/*!sc*/
+data-styled.g12[id="sc-kFCscd"]{content:"kEEgVT,"}/*!sc*/
+.cidbli{border-bottom:1px solid rgba(38, 50, 56, 0.3);margin:1em 0 1em 0;color:rgba(38, 50, 56, 0.5);font-weight:normal;text-transform:uppercase;font-size:0.929em;line-height:20px;}/*!sc*/
+data-styled.g13[id="sc-irLwvM"]{content:"cidbli,"}/*!sc*/
+.bedANz{cursor:pointer;margin-left:-20px;padding:0;line-height:1;width:20px;display:inline-block;outline:0;}/*!sc*/
+.bedANz:before{content:'';width:15px;height:15px;background-size:contain;background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeD0iMCIgeT0iMCIgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1MTIgNTEyIiB4bWw6c3BhY2U9InByZXNlcnZlIj48cGF0aCBmaWxsPSIjMDEwMTAxIiBkPSJNNDU5LjcgMjMzLjRsLTkwLjUgOTAuNWMtNTAgNTAtMTMxIDUwLTE4MSAwIC03LjktNy44LTE0LTE2LjctMTkuNC0yNS44bDQyLjEtNDIuMWMyLTIgNC41LTMuMiA2LjgtNC41IDIuOSA5LjkgOCAxOS4zIDE1LjggMjcuMiAyNSAyNSA2NS42IDI0LjkgOTAuNSAwbDkwLjUtOTAuNWMyNS0yNSAyNS02NS42IDAtOTAuNSAtMjQuOS0yNS02NS41LTI1LTkwLjUgMGwtMzIuMiAzMi4yYy0yNi4xLTEwLjItNTQuMi0xMi45LTgxLjYtOC45bDY4LjYtNjguNmM1MC01MCAxMzEtNTAgMTgxIDBDNTA5LjYgMTAyLjMgNTA5LjYgMTgzLjQgNDU5LjcgMjMzLjR6TTIyMC4zIDM4Mi4ybC0zMi4yIDMyLjJjLTI1IDI0LjktNjUuNiAyNC45LTkwLjUgMCAtMjUtMjUtMjUtNjUuNiAwLTkwLjVsOTAuNS05MC41YzI1LTI1IDY1LjUtMjUgOTAuNSAwIDcuOCA3LjggMTIuOSAxNy4yIDE1LjggMjcuMSAyLjQtMS40IDQuOC0yLjUgNi44LTQuNWw0Mi4xLTQyYy01LjQtOS4yLTExLjYtMTgtMTkuNC0yNS44IC01MC01MC0xMzEtNTAtMTgxIDBsLTkwLjUgOTAuNWMtNTAgNTAtNTAgMTMxIDAgMTgxIDUwIDUwIDEzMSA1MCAxODEgMGw2OC42LTY4LjZDMjc0LjYgMzk1LjEgMjQ2LjQgMzkyLjMgMjIwLjMgMzgyLjJ6Ii8+PC9zdmc+Cg==');opacity:0.5;visibility:hidden;display:inline-block;vertical-align:middle;}/*!sc*/
+h1:hover>.bedANz::before,h2:hover>.bedANz::before,.bedANz:hover::before{visibility:visible;}/*!sc*/
+data-styled.g14[id="sc-csKIKD"]{content:"bedANz,"}/*!sc*/
+.dGmYXL{height:18px;width:18px;min-width:18px;vertical-align:middle;float:right;transition:transform 0.2s ease-out;transform:rotateZ(-90deg);}/*!sc*/
+.cjEnym{height:1.3em;width:1.3em;min-width:1.3em;vertical-align:middle;transition:transform 0.2s ease-out;transform:rotateZ(-90deg);}/*!sc*/
+.bjXKRK{height:1.5em;width:1.5em;min-width:1.5em;vertical-align:middle;float:left;transition:transform 0.2s ease-out;transform:rotateZ(-90deg);}/*!sc*/
+.bjXKRK polygon{fill:#00aa13;}/*!sc*/
+.iPQVSx{height:1.5em;width:1.5em;min-width:1.5em;vertical-align:middle;float:left;transition:transform 0.2s ease-out;transform:rotateZ(-90deg);}/*!sc*/
+.iPQVSx polygon{fill:#d41f1c;}/*!sc*/
+.cptRNl{height:20px;width:20px;min-width:20px;vertical-align:middle;float:right;transition:transform 0.2s ease-out;transform:rotateZ(0);}/*!sc*/
+.cptRNl polygon{fill:white;}/*!sc*/
+data-styled.g15[id="sc-eTNem"]{content:"dGmYXL,cjEnym,bjXKRK,iPQVSx,cptRNl,"}/*!sc*/
+.qtkOl{border-left:1px solid #7c7cbb;box-sizing:border-box;position:relative;padding:10px 10px 10px 0;}/*!sc*/
+@media screen and (max-width: 50rem){.qtkOl{display:block;overflow:hidden;}}/*!sc*/
+tr:first-of-type>.qtkOl,tr.last>.qtkOl{border-left-width:0;background-position:top left;background-repeat:no-repeat;background-size:1px 100%;}/*!sc*/
+tr:first-of-type>.qtkOl{background-image:linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 22px,
+      #7c7cbb 22px,
+      #7c7cbb 100%
+    );}/*!sc*/
+tr.last>.qtkOl{background-image:linear-gradient(
+      to bottom,
+      #7c7cbb 0%,
+      #7c7cbb 22px,
+      transparent 22px,
+      transparent 100%
+    );}/*!sc*/
+tr.last+tr>.qtkOl{border-left-color:transparent;}/*!sc*/
+tr.last:first-child>.qtkOl{background:none;border-left-color:transparent;}/*!sc*/
+data-styled.g18[id="sc-hABAzn"]{content:"qtkOl,"}/*!sc*/
+.jNLeNf{vertical-align:top;line-height:20px;white-space:nowrap;font-size:13px;font-family:Courier,monospace;}/*!sc*/
+.jNLeNf.deprecated{text-decoration:line-through;color:#707070;}/*!sc*/
+data-styled.g20[id="sc-fHekdU"]{content:"jNLeNf,"}/*!sc*/
+.dbUkkC{border-bottom:1px solid #9fb4be;padding:10px 0;width:75%;box-sizing:border-box;}/*!sc*/
+tr.expanded .dbUkkC{border-bottom:none;}/*!sc*/
+@media screen and (max-width: 50rem){.dbUkkC{padding:0 20px;border-bottom:none;border-left:1px solid #7c7cbb;}tr.last>.dbUkkC{border-left:none;}}/*!sc*/
+data-styled.g21[id="sc-blmETN"]{content:"dbUkkC,"}/*!sc*/
+.jAiheG{color:#7c7cbb;font-family:Courier,monospace;margin-right:10px;}/*!sc*/
+.jAiheG::before{content:'';display:inline-block;vertical-align:middle;width:10px;height:1px;background:#7c7cbb;}/*!sc*/
+.jAiheG::after{content:'';display:inline-block;vertical-align:middle;width:1px;background:#7c7cbb;height:7px;}/*!sc*/
+data-styled.g22[id="sc-ifyqMW"]{content:"jAiheG,"}/*!sc*/
+.fKfEUC{border-collapse:separate;border-radius:3px;font-size:16px;border-spacing:0;width:100%;}/*!sc*/
+.fKfEUC >tr{vertical-align:middle;}/*!sc*/
+@media screen and (max-width: 50rem){.fKfEUC{display:block;}.fKfEUC >tr,.fKfEUC >tbody>tr{display:block;}}/*!sc*/
+@media screen and (max-width: 50rem) and (-ms-high-contrast:none){.fKfEUC td{float:left;width:100%;}}/*!sc*/
+.fKfEUC .sc-dJGLCP,.fKfEUC .sc-dJGLCP .sc-dJGLCP .sc-dJGLCP,.fKfEUC .sc-dJGLCP .sc-dJGLCP .sc-dJGLCP .sc-dJGLCP .sc-dJGLCP{margin:1em;margin-right:0;background:#fafafa;}/*!sc*/
+.fKfEUC .sc-dJGLCP .sc-dJGLCP,.fKfEUC .sc-dJGLCP .sc-dJGLCP .sc-dJGLCP .sc-dJGLCP,.fKfEUC .sc-dJGLCP .sc-dJGLCP .sc-dJGLCP .sc-dJGLCP .sc-dJGLCP .sc-dJGLCP{background:#ffffff;}/*!sc*/
+data-styled.g24[id="sc-hIPCAM"]{content:"fKfEUC,"}/*!sc*/
+.buXd >ul{list-style:none;padding:0;margin:0;margin:0 -5px;}/*!sc*/
+.buXd >ul >li{padding:5px 10px;display:inline-block;background-color:#11171a;border-bottom:1px solid rgba(0, 0, 0, 0.5);cursor:pointer;text-align:center;outline:none;color:#ccc;margin:0 5px 5px 5px;border:1px solid #07090b;border-radius:5px;min-width:60px;font-size:0.9em;font-weight:bold;}/*!sc*/
+.buXd >ul >li.react-tabs__tab--selected{color:#333333;background:#ffffff;}/*!sc*/
+.buXd >ul >li.react-tabs__tab--selected:focus{outline:auto;}/*!sc*/
+.buXd >ul >li:only-child{flex:none;min-width:100px;}/*!sc*/
+.buXd >ul >li.tab-success{color:#00aa13;}/*!sc*/
+.buXd >ul >li.tab-redirect{color:#ffa500;}/*!sc*/
+.buXd >ul >li.tab-info{color:#87ceeb;}/*!sc*/
+.buXd >ul >li.tab-error{color:#d41f1c;}/*!sc*/
+.buXd >.react-tabs__tab-panel{background:#11171a;}/*!sc*/
+.buXd >.react-tabs__tab-panel>div,.buXd >.react-tabs__tab-panel>pre{padding:20px;margin:0;}/*!sc*/
+.buXd >.react-tabs__tab-panel>div>pre{padding:0;}/*!sc*/
+data-styled.g30[id="sc-cyZbSl"]{content:"buXd,"}/*!sc*/
+.cslxVo code[class*='language-'],.cslxVo pre[class*='language-']{text-shadow:0 -0.1em 0.2em black;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none;}/*!sc*/
+@media print{.cslxVo code[class*='language-'],.cslxVo pre[class*='language-']{text-shadow:none;}}/*!sc*/
+.cslxVo pre[class*='language-']{padding:1em;margin:0.5em 0;overflow:auto;}/*!sc*/
+.cslxVo .token.comment,.cslxVo .token.prolog,.cslxVo .token.doctype,.cslxVo .token.cdata{color:hsl(30, 20%, 50%);}/*!sc*/
+.cslxVo .token.punctuation{opacity:0.7;}/*!sc*/
+.cslxVo .namespace{opacity:0.7;}/*!sc*/
+.cslxVo .token.property,.cslxVo .token.tag,.cslxVo .token.number,.cslxVo .token.constant,.cslxVo .token.symbol{color:#4a8bb3;}/*!sc*/
+.cslxVo .token.boolean{color:#e64441;}/*!sc*/
+.cslxVo .token.selector,.cslxVo .token.attr-name,.cslxVo .token.string,.cslxVo .token.char,.cslxVo .token.builtin,.cslxVo .token.inserted{color:#a0fbaa;}/*!sc*/
+.cslxVo .token.selector+a,.cslxVo .token.attr-name+a,.cslxVo .token.string+a,.cslxVo .token.char+a,.cslxVo .token.builtin+a,.cslxVo .token.inserted+a,.cslxVo .token.selector+a:visited,.cslxVo .token.attr-name+a:visited,.cslxVo .token.string+a:visited,.cslxVo .token.char+a:visited,.cslxVo .token.builtin+a:visited,.cslxVo .token.inserted+a:visited{color:#4ed2ba;text-decoration:underline;}/*!sc*/
+.cslxVo .token.property.string{color:white;}/*!sc*/
+.cslxVo .token.operator,.cslxVo .token.entity,.cslxVo .token.url,.cslxVo .token.variable{color:hsl(40, 90%, 60%);}/*!sc*/
+.cslxVo .token.atrule,.cslxVo .token.attr-value,.cslxVo .token.keyword{color:hsl(350, 40%, 70%);}/*!sc*/
+.cslxVo .token.regex,.cslxVo .token.important{color:#e90;}/*!sc*/
+.cslxVo .token.important,.cslxVo .token.bold{font-weight:bold;}/*!sc*/
+.cslxVo .token.italic{font-style:italic;}/*!sc*/
+.cslxVo .token.entity{cursor:help;}/*!sc*/
+.cslxVo .token.deleted{color:red;}/*!sc*/
+data-styled.g32[id="sc-iKOlBD"]{content:"cslxVo,"}/*!sc*/
+.hOxdxq{opacity:0.7;transition:opacity 0.3s ease;text-align:right;}/*!sc*/
+.hOxdxq:focus-within{opacity:1;}/*!sc*/
+.hOxdxq >button{background-color:transparent;border:0;color:inherit;padding:2px 10px;font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.5em;cursor:pointer;outline:0;}/*!sc*/
+.hOxdxq >button :hover,.hOxdxq >button :focus{background:rgba(255, 255, 255, 0.1);}/*!sc*/
+data-styled.g33[id="sc-gjLKRm"]{content:"hOxdxq,"}/*!sc*/
+.jBbQWE{position:relative;}/*!sc*/
+data-styled.g37[id="sc-kMzDYv"]{content:"jBbQWE,"}/*!sc*/
+.dcIYrC{position:absolute;pointer-events:none;z-index:1;top:50%;-webkit-transform:translateY(-50%);-ms-transform:translateY(-50%);transform:translateY(-50%);right:8px;margin:auto;text-align:center;}/*!sc*/
+.dcIYrC polyline{color:white;}/*!sc*/
+data-styled.g38[id="sc-ilxdoe"]{content:"dcIYrC,"}/*!sc*/
+.jxoQhL{box-sizing:border-box;min-width:100px;outline:none;display:inline-block;border-radius:2px;border:1px solid rgba(38, 50, 56, 0.5);vertical-align:bottom;padding:2px 0px 2px 6px;position:relative;width:auto;background:white;color:#263238;font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-size:0.929em;line-height:1.5em;cursor:pointer;transition:border 0.25s ease,color 0.25s ease,box-shadow 0.25s ease;}/*!sc*/
+.jxoQhL label{box-sizing:border-box;min-width:100px;outline:none;display:inline-block;font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#333333;vertical-align:bottom;width:auto;text-transform:none;padding:0 22px 0 4px;font-size:0.929em;line-height:1.5em;font-family:inherit;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;}/*!sc*/
+.jxoQhL .dropdown-select{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;border:none;appearance:none;cursor:pointer;color:#333333;line-height:inherit;font-family:inherit;}/*!sc*/
+.jxoQhL:hover,.jxoQhL:focus-within{border:1px solid #32329f;color:#32329f;box-shadow:0px 0px 0px 1px #32329f;}/*!sc*/
+data-styled.g39[id="sc-jIBmdN"]{content:"jxoQhL,"}/*!sc*/
+.evWhhd{margin-left:10px;text-transform:none;font-size:0.929em;color:black;}/*!sc*/
+data-styled.g41[id="sc-gYrpUK"]{content:"evWhhd,"}/*!sc*/
+.dqSAMj{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-weight:400;line-height:1.5em;}/*!sc*/
+.dqSAMj p:last-child{margin-bottom:0;}/*!sc*/
+.dqSAMj h1{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-weight:400;font-size:1.85714em;line-height:1.6em;color:#32329f;margin-top:0;}/*!sc*/
+.dqSAMj h2{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-weight:400;font-size:1.57143em;line-height:1.6em;color:#333333;}/*!sc*/
+.dqSAMj code{color:#e53935;background-color:rgba(38, 50, 56, 0.05);font-family:Courier,monospace;border-radius:2px;border:1px solid rgba(38, 50, 56, 0.1);padding:0 5px;font-size:13px;font-weight:400;word-break:break-word;}/*!sc*/
+.dqSAMj pre{font-family:Courier,monospace;white-space:pre;background-color:#11171a;color:white;padding:20px;overflow-x:auto;line-height:normal;border-radius:0;border:1px solid rgba(38, 50, 56, 0.1);}/*!sc*/
+.dqSAMj pre code{background-color:transparent;color:white;padding:0;}/*!sc*/
+.dqSAMj pre code:before,.dqSAMj pre code:after{content:none;}/*!sc*/
+.dqSAMj blockquote{margin:0;margin-bottom:1em;padding:0 15px;color:#777;border-left:4px solid #ddd;}/*!sc*/
+.dqSAMj img{max-width:100%;box-sizing:content-box;}/*!sc*/
+.dqSAMj ul,.dqSAMj ol{padding-left:2em;margin:0;margin-bottom:1em;}/*!sc*/
+.dqSAMj ul ul,.dqSAMj ol ul,.dqSAMj ul ol,.dqSAMj ol ol{margin-bottom:0;margin-top:0;}/*!sc*/
+.dqSAMj table{display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all;border-collapse:collapse;border-spacing:0;margin-top:1.5em;margin-bottom:1.5em;}/*!sc*/
+.dqSAMj table tr{background-color:#fff;border-top:1px solid #ccc;}/*!sc*/
+.dqSAMj table tr:nth-child(2n){background-color:#fafafa;}/*!sc*/
+.dqSAMj table th,.dqSAMj table td{padding:6px 13px;border:1px solid #ddd;}/*!sc*/
+.dqSAMj table th{text-align:left;font-weight:bold;}/*!sc*/
+.dqSAMj .share-link{cursor:pointer;margin-left:-20px;padding:0;line-height:1;width:20px;display:inline-block;outline:0;}/*!sc*/
+.dqSAMj .share-link:before{content:'';width:15px;height:15px;background-size:contain;background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeD0iMCIgeT0iMCIgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1MTIgNTEyIiB4bWw6c3BhY2U9InByZXNlcnZlIj48cGF0aCBmaWxsPSIjMDEwMTAxIiBkPSJNNDU5LjcgMjMzLjRsLTkwLjUgOTAuNWMtNTAgNTAtMTMxIDUwLTE4MSAwIC03LjktNy44LTE0LTE2LjctMTkuNC0yNS44bDQyLjEtNDIuMWMyLTIgNC41LTMuMiA2LjgtNC41IDIuOSA5LjkgOCAxOS4zIDE1LjggMjcuMiAyNSAyNSA2NS42IDI0LjkgOTAuNSAwbDkwLjUtOTAuNWMyNS0yNSAyNS02NS42IDAtOTAuNSAtMjQuOS0yNS02NS41LTI1LTkwLjUgMGwtMzIuMiAzMi4yYy0yNi4xLTEwLjItNTQuMi0xMi45LTgxLjYtOC45bDY4LjYtNjguNmM1MC01MCAxMzEtNTAgMTgxIDBDNTA5LjYgMTAyLjMgNTA5LjYgMTgzLjQgNDU5LjcgMjMzLjR6TTIyMC4zIDM4Mi4ybC0zMi4yIDMyLjJjLTI1IDI0LjktNjUuNiAyNC45LTkwLjUgMCAtMjUtMjUtMjUtNjUuNiAwLTkwLjVsOTAuNS05MC41YzI1LTI1IDY1LjUtMjUgOTAuNSAwIDcuOCA3LjggMTIuOSAxNy4yIDE1LjggMjcuMSAyLjQtMS40IDQuOC0yLjUgNi44LTQuNWw0Mi4xLTQyYy01LjQtOS4yLTExLjYtMTgtMTkuNC0yNS44IC01MC01MC0xMzEtNTAtMTgxIDBsLTkwLjUgOTAuNWMtNTAgNTAtNTAgMTMxIDAgMTgxIDUwIDUwIDEzMSA1MCAxODEgMGw2OC42LTY4LjZDMjc0LjYgMzk1LjEgMjQ2LjQgMzkyLjMgMjIwLjMgMzgyLjJ6Ii8+PC9zdmc+Cg==');opacity:0.5;visibility:hidden;display:inline-block;vertical-align:middle;}/*!sc*/
+.dqSAMj h1:hover>.share-link::before,.dqSAMj h2:hover>.share-link::before,.dqSAMj .share-link:hover::before{visibility:visible;}/*!sc*/
+.dqSAMj a{text-decoration:auto;color:#32329f;}/*!sc*/
+.dqSAMj a:visited{color:#32329f;}/*!sc*/
+.dqSAMj a:hover{color:#6868cf;text-decoration:auto;}/*!sc*/
+.jLDXvl{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-weight:400;line-height:1.5em;}/*!sc*/
+.jLDXvl p:last-child{margin-bottom:0;}/*!sc*/
+.jLDXvl p:first-child{margin-top:0;}/*!sc*/
+.jLDXvl p:last-child{margin-bottom:0;}/*!sc*/
+.jLDXvl h1{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-weight:400;font-size:1.85714em;line-height:1.6em;color:#32329f;margin-top:0;}/*!sc*/
+.jLDXvl h2{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-weight:400;font-size:1.57143em;line-height:1.6em;color:#333333;}/*!sc*/
+.jLDXvl code{color:#e53935;background-color:rgba(38, 50, 56, 0.05);font-family:Courier,monospace;border-radius:2px;border:1px solid rgba(38, 50, 56, 0.1);padding:0 5px;font-size:13px;font-weight:400;word-break:break-word;}/*!sc*/
+.jLDXvl pre{font-family:Courier,monospace;white-space:pre;background-color:#11171a;color:white;padding:20px;overflow-x:auto;line-height:normal;border-radius:0;border:1px solid rgba(38, 50, 56, 0.1);}/*!sc*/
+.jLDXvl pre code{background-color:transparent;color:white;padding:0;}/*!sc*/
+.jLDXvl pre code:before,.jLDXvl pre code:after{content:none;}/*!sc*/
+.jLDXvl blockquote{margin:0;margin-bottom:1em;padding:0 15px;color:#777;border-left:4px solid #ddd;}/*!sc*/
+.jLDXvl img{max-width:100%;box-sizing:content-box;}/*!sc*/
+.jLDXvl ul,.jLDXvl ol{padding-left:2em;margin:0;margin-bottom:1em;}/*!sc*/
+.jLDXvl ul ul,.jLDXvl ol ul,.jLDXvl ul ol,.jLDXvl ol ol{margin-bottom:0;margin-top:0;}/*!sc*/
+.jLDXvl table{display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all;border-collapse:collapse;border-spacing:0;margin-top:1.5em;margin-bottom:1.5em;}/*!sc*/
+.jLDXvl table tr{background-color:#fff;border-top:1px solid #ccc;}/*!sc*/
+.jLDXvl table tr:nth-child(2n){background-color:#fafafa;}/*!sc*/
+.jLDXvl table th,.jLDXvl table td{padding:6px 13px;border:1px solid #ddd;}/*!sc*/
+.jLDXvl table th{text-align:left;font-weight:bold;}/*!sc*/
+.jLDXvl .share-link{cursor:pointer;margin-left:-20px;padding:0;line-height:1;width:20px;display:inline-block;outline:0;}/*!sc*/
+.jLDXvl .share-link:before{content:'';width:15px;height:15px;background-size:contain;background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeD0iMCIgeT0iMCIgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1MTIgNTEyIiB4bWw6c3BhY2U9InByZXNlcnZlIj48cGF0aCBmaWxsPSIjMDEwMTAxIiBkPSJNNDU5LjcgMjMzLjRsLTkwLjUgOTAuNWMtNTAgNTAtMTMxIDUwLTE4MSAwIC03LjktNy44LTE0LTE2LjctMTkuNC0yNS44bDQyLjEtNDIuMWMyLTIgNC41LTMuMiA2LjgtNC41IDIuOSA5LjkgOCAxOS4zIDE1LjggMjcuMiAyNSAyNSA2NS42IDI0LjkgOTAuNSAwbDkwLjUtOTAuNWMyNS0yNSAyNS02NS42IDAtOTAuNSAtMjQuOS0yNS02NS41LTI1LTkwLjUgMGwtMzIuMiAzMi4yYy0yNi4xLTEwLjItNTQuMi0xMi45LTgxLjYtOC45bDY4LjYtNjguNmM1MC01MCAxMzEtNTAgMTgxIDBDNTA5LjYgMTAyLjMgNTA5LjYgMTgzLjQgNDU5LjcgMjMzLjR6TTIyMC4zIDM4Mi4ybC0zMi4yIDMyLjJjLTI1IDI0LjktNjUuNiAyNC45LTkwLjUgMCAtMjUtMjUtMjUtNjUuNiAwLTkwLjVsOTAuNS05MC41YzI1LTI1IDY1LjUtMjUgOTAuNSAwIDcuOCA3LjggMTIuOSAxNy4yIDE1LjggMjcuMSAyLjQtMS40IDQuOC0yLjUgNi44LTQuNWw0Mi4xLTQyYy01LjQtOS4yLTExLjYtMTgtMTkuNC0yNS44IC01MC01MC0xMzEtNTAtMTgxIDBsLTkwLjUgOTAuNWMtNTAgNTAtNTAgMTMxIDAgMTgxIDUwIDUwIDEzMSA1MCAxODEgMGw2OC42LTY4LjZDMjc0LjYgMzk1LjEgMjQ2LjQgMzkyLjMgMjIwLjMgMzgyLjJ6Ii8+PC9zdmc+Cg==');opacity:0.5;visibility:hidden;display:inline-block;vertical-align:middle;}/*!sc*/
+.jLDXvl h1:hover>.share-link::before,.jLDXvl h2:hover>.share-link::before,.jLDXvl .share-link:hover::before{visibility:visible;}/*!sc*/
+.jLDXvl a{text-decoration:auto;color:#32329f;}/*!sc*/
+.jLDXvl a:visited{color:#32329f;}/*!sc*/
+.jLDXvl a:hover{color:#6868cf;text-decoration:auto;}/*!sc*/
+.eTTtlZ{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-weight:400;line-height:1.5em;}/*!sc*/
+.eTTtlZ p:last-child{margin-bottom:0;}/*!sc*/
+.eTTtlZ p:first-child{margin-top:0;}/*!sc*/
+.eTTtlZ p:last-child{margin-bottom:0;}/*!sc*/
+.eTTtlZ p{display:inline-block;}/*!sc*/
+.eTTtlZ h1{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-weight:400;font-size:1.85714em;line-height:1.6em;color:#32329f;margin-top:0;}/*!sc*/
+.eTTtlZ h2{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-weight:400;font-size:1.57143em;line-height:1.6em;color:#333333;}/*!sc*/
+.eTTtlZ code{color:#e53935;background-color:rgba(38, 50, 56, 0.05);font-family:Courier,monospace;border-radius:2px;border:1px solid rgba(38, 50, 56, 0.1);padding:0 5px;font-size:13px;font-weight:400;word-break:break-word;}/*!sc*/
+.eTTtlZ pre{font-family:Courier,monospace;white-space:pre;background-color:#11171a;color:white;padding:20px;overflow-x:auto;line-height:normal;border-radius:0;border:1px solid rgba(38, 50, 56, 0.1);}/*!sc*/
+.eTTtlZ pre code{background-color:transparent;color:white;padding:0;}/*!sc*/
+.eTTtlZ pre code:before,.eTTtlZ pre code:after{content:none;}/*!sc*/
+.eTTtlZ blockquote{margin:0;margin-bottom:1em;padding:0 15px;color:#777;border-left:4px solid #ddd;}/*!sc*/
+.eTTtlZ img{max-width:100%;box-sizing:content-box;}/*!sc*/
+.eTTtlZ ul,.eTTtlZ ol{padding-left:2em;margin:0;margin-bottom:1em;}/*!sc*/
+.eTTtlZ ul ul,.eTTtlZ ol ul,.eTTtlZ ul ol,.eTTtlZ ol ol{margin-bottom:0;margin-top:0;}/*!sc*/
+.eTTtlZ table{display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all;border-collapse:collapse;border-spacing:0;margin-top:1.5em;margin-bottom:1.5em;}/*!sc*/
+.eTTtlZ table tr{background-color:#fff;border-top:1px solid #ccc;}/*!sc*/
+.eTTtlZ table tr:nth-child(2n){background-color:#fafafa;}/*!sc*/
+.eTTtlZ table th,.eTTtlZ table td{padding:6px 13px;border:1px solid #ddd;}/*!sc*/
+.eTTtlZ table th{text-align:left;font-weight:bold;}/*!sc*/
+.eTTtlZ .share-link{cursor:pointer;margin-left:-20px;padding:0;line-height:1;width:20px;display:inline-block;outline:0;}/*!sc*/
+.eTTtlZ .share-link:before{content:'';width:15px;height:15px;background-size:contain;background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeD0iMCIgeT0iMCIgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1MTIgNTEyIiB4bWw6c3BhY2U9InByZXNlcnZlIj48cGF0aCBmaWxsPSIjMDEwMTAxIiBkPSJNNDU5LjcgMjMzLjRsLTkwLjUgOTAuNWMtNTAgNTAtMTMxIDUwLTE4MSAwIC03LjktNy44LTE0LTE2LjctMTkuNC0yNS44bDQyLjEtNDIuMWMyLTIgNC41LTMuMiA2LjgtNC41IDIuOSA5LjkgOCAxOS4zIDE1LjggMjcuMiAyNSAyNSA2NS42IDI0LjkgOTAuNSAwbDkwLjUtOTAuNWMyNS0yNSAyNS02NS42IDAtOTAuNSAtMjQuOS0yNS02NS41LTI1LTkwLjUgMGwtMzIuMiAzMi4yYy0yNi4xLTEwLjItNTQuMi0xMi45LTgxLjYtOC45bDY4LjYtNjguNmM1MC01MCAxMzEtNTAgMTgxIDBDNTA5LjYgMTAyLjMgNTA5LjYgMTgzLjQgNDU5LjcgMjMzLjR6TTIyMC4zIDM4Mi4ybC0zMi4yIDMyLjJjLTI1IDI0LjktNjUuNiAyNC45LTkwLjUgMCAtMjUtMjUtMjUtNjUuNiAwLTkwLjVsOTAuNS05MC41YzI1LTI1IDY1LjUtMjUgOTAuNSAwIDcuOCA3LjggMTIuOSAxNy4yIDE1LjggMjcuMSAyLjQtMS40IDQuOC0yLjUgNi44LTQuNWw0Mi4xLTQyYy01LjQtOS4yLTExLjYtMTgtMTkuNC0yNS44IC01MC01MC0xMzEtNTAtMTgxIDBsLTkwLjUgOTAuNWMtNTAgNTAtNTAgMTMxIDAgMTgxIDUwIDUwIDEzMSA1MCAxODEgMGw2OC42LTY4LjZDMjc0LjYgMzk1LjEgMjQ2LjQgMzkyLjMgMjIwLjMgMzgyLjJ6Ii8+PC9zdmc+Cg==');opacity:0.5;visibility:hidden;display:inline-block;vertical-align:middle;}/*!sc*/
+.eTTtlZ h1:hover>.share-link::before,.eTTtlZ h2:hover>.share-link::before,.eTTtlZ .share-link:hover::before{visibility:visible;}/*!sc*/
+.eTTtlZ a{text-decoration:auto;color:#32329f;}/*!sc*/
+.eTTtlZ a:visited{color:#32329f;}/*!sc*/
+.eTTtlZ a:hover{color:#6868cf;text-decoration:auto;}/*!sc*/
+data-styled.g42[id="sc-cCzKKD"]{content:"dqSAMj,jLDXvl,eTTtlZ,"}/*!sc*/
+.hKuZJA{display:inline;}/*!sc*/
+data-styled.g43[id="sc-ckdFjQ"]{content:"hKuZJA,"}/*!sc*/
+.cUpQkY{position:relative;}/*!sc*/
+data-styled.g44[id="sc-jdHJyF"]{content:"cUpQkY,"}/*!sc*/
+.bDQDNm:hover>.sc-gjLKRm{opacity:1;}/*!sc*/
+data-styled.g49[id="sc-cSxQHq"]{content:"bDQDNm,"}/*!sc*/
+.izDcBD{font-family:Courier,monospace;font-size:13px;white-space:pre;contain:content;overflow-x:auto;}/*!sc*/
+.izDcBD .redoc-json code>.collapser{display:none;pointer-events:none;}/*!sc*/
+.izDcBD .callback-function{color:gray;}/*!sc*/
+.izDcBD .collapser:after{content:'-';cursor:pointer;}/*!sc*/
+.izDcBD .collapsed>.collapser:after{content:'+';cursor:pointer;}/*!sc*/
+.izDcBD .ellipsis:after{content:' … ';}/*!sc*/
+.izDcBD .collapsible{margin-left:2em;}/*!sc*/
+.izDcBD .hoverable{padding-top:1px;padding-bottom:1px;padding-left:2px;padding-right:2px;border-radius:2px;}/*!sc*/
+.izDcBD .hovered{background-color:rgba(235, 238, 249, 1);}/*!sc*/
+.izDcBD .collapser{background-color:transparent;border:0;color:#fff;font-family:Courier,monospace;font-size:13px;padding-right:6px;padding-left:6px;padding-top:0;padding-bottom:0;display:flex;align-items:center;justify-content:center;width:15px;height:15px;position:absolute;top:4px;left:-1.5em;cursor:default;user-select:none;-webkit-user-select:none;padding:2px;}/*!sc*/
+.izDcBD .collapser:focus{outline-color:#fff;outline-style:dotted;outline-width:1px;}/*!sc*/
+.izDcBD ul{list-style-type:none;padding:0px;margin:0px 0px 0px 26px;}/*!sc*/
+.izDcBD li{position:relative;display:block;}/*!sc*/
+.izDcBD .hoverable{display:inline-block;}/*!sc*/
+.izDcBD .selected{outline-style:solid;outline-width:1px;outline-style:dotted;}/*!sc*/
+.izDcBD .collapsed>.collapsible{display:none;}/*!sc*/
+.izDcBD .ellipsis{display:none;}/*!sc*/
+.izDcBD .collapsed>.ellipsis{display:inherit;}/*!sc*/
+data-styled.g50[id="sc-jMbUWf"]{content:"izDcBD,"}/*!sc*/
+.ctQKNy{padding:0.9em;background-color:rgba(38,50,56,0.4);margin:0 0 10px 0;display:block;font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-size:0.929em;line-height:1.5em;}/*!sc*/
+data-styled.g51[id="sc-dQmhJb"]{content:"ctQKNy,"}/*!sc*/
+.dIZRkC{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-size:12px;position:absolute;z-index:1;top:-11px;left:12px;font-weight:600;color:rgba(255,255,255,0.7);}/*!sc*/
+data-styled.g52[id="sc-bCvmcK"]{content:"dIZRkC,"}/*!sc*/
+.fFQIef{position:relative;}/*!sc*/
+data-styled.g53[id="sc-cPtzYx"]{content:"fFQIef,"}/*!sc*/
+.bKZwjg{margin:0 0 10px 0;display:block;background-color:rgba(38,50,56,0.4);border:none;padding:0.9em 1.6em 0.9em 0.9em;box-shadow:none;}/*!sc*/
+.bKZwjg label{color:#ffffff;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;font-size:1em;text-transform:none;border:none;}/*!sc*/
+.bKZwjg:hover,.bKZwjg:focus-within{border:none;box-shadow:none;background-color:rgba(38,50,56,0.7);}/*!sc*/
+data-styled.g54[id="sc-BCEsg"]{content:"bKZwjg,"}/*!sc*/
+.jTWsvS{margin-top:15px;}/*!sc*/
+data-styled.g56[id="sc-hVcFhS"]{content:"jTWsvS,"}/*!sc*/
+.cMzMHg{vertical-align:middle;font-size:13px;line-height:20px;}/*!sc*/
+data-styled.g58[id="sc-gUjXxo"]{content:"cMzMHg,"}/*!sc*/
+.hhCpbw{color:rgba(102,102,102,0.9);}/*!sc*/
+data-styled.g59[id="sc-kZOrUD"]{content:"hhCpbw,"}/*!sc*/
+.fIGxvH{color:#666;}/*!sc*/
+data-styled.g60[id="sc-iLXwom"]{content:"fIGxvH,"}/*!sc*/
+.BbXSm{color:#d41f1c;font-size:0.9em;font-weight:normal;margin-left:20px;line-height:1;}/*!sc*/
+data-styled.g62[id="sc-eKzwpd"]{content:"BbXSm,"}/*!sc*/
+.hvQkTi{color:#0e7c86;font-family:Courier,monospace;font-size:12px;}/*!sc*/
+.hvQkTi::before,.hvQkTi::after{content:' ';}/*!sc*/
+data-styled.g65[id="sc-ejCLfw"]{content:"hvQkTi,"}/*!sc*/
+.cNHQfj{border-radius:2px;word-break:break-word;background-color:rgba(51,51,51,0.05);color:rgba(51,51,51,0.9);padding:0 5px;border:1px solid rgba(51,51,51,0.1);font-family:Courier,monospace;}/*!sc*/
+.sc-ldgPul+.sc-ldgPul{margin-left:0;}/*!sc*/
+data-styled.g66[id="sc-ldgPul"]{content:"cNHQfj,"}/*!sc*/
+.fNDDrI{border-radius:2px;background-color:rgba(104,104,207,0.05);color:rgba(50,50,159,0.9);margin:0 5px;padding:0 5px;border:1px solid rgba(50,50,159,0.1);}/*!sc*/
+.sc-cmfmEr+.sc-cmfmEr{margin-left:0;}/*!sc*/
+data-styled.g68[id="sc-cmfmEr"]{content:"fNDDrI,"}/*!sc*/
+.ja-dsOl:after{content:' and ';font-weight:normal;}/*!sc*/
+.ja-dsOl:last-child:after{content:none;}/*!sc*/
+.ja-dsOl a{text-decoration:auto;color:#32329f;}/*!sc*/
+.ja-dsOl a:visited{color:#32329f;}/*!sc*/
+.ja-dsOl a:hover{color:#6868cf;text-decoration:auto;}/*!sc*/
+data-styled.g81[id="sc-hNDKOa"]{content:"ja-dsOl,"}/*!sc*/
+.jcbyVq{white-space:nowrap;}/*!sc*/
+.jcbyVq:after{content:' or ';white-space:pre;}/*!sc*/
+.jcbyVq:last-child:after,.jcbyVq:only-child:after{content:none;}/*!sc*/
+.jcbyVq a{text-decoration:auto;color:#32329f;}/*!sc*/
+.jcbyVq a:visited{color:#32329f;}/*!sc*/
+.jcbyVq a:hover{color:#6868cf;text-decoration:auto;}/*!sc*/
+data-styled.g82[id="sc-drMfDT"]{content:"jcbyVq,"}/*!sc*/
+.cqXlxf{flex:1 1 auto;cursor:pointer;}/*!sc*/
+data-styled.g83[id="sc-cZqa-dg"]{content:"cqXlxf,"}/*!sc*/
+.jzVzGc{width:75%;text-overflow:ellipsis;border-radius:4px;overflow:hidden;}/*!sc*/
+@media screen and (max-width: 50rem){.jzVzGc{margin-top:10px;}}/*!sc*/
+data-styled.g84[id="sc-jSUerV"]{content:"jzVzGc,"}/*!sc*/
+.ddxOHS{display:inline-block;margin:0;}/*!sc*/
+data-styled.g85[id="sc-jPpdkS"]{content:"ddxOHS,"}/*!sc*/
+.bJYtcx{width:100%;display:flex;margin:1em 0;flex-direction:row;}/*!sc*/
+@media screen and (max-width: 50rem){.bJYtcx{flex-direction:column;}}/*!sc*/
+data-styled.g86[id="sc-ftxyaL"]{content:"bJYtcx,"}/*!sc*/
+.fFuIUI{margin-top:0;margin-bottom:0.5em;}/*!sc*/
+data-styled.g92[id="sc-crHGWa"]{content:"fFuIUI,"}/*!sc*/
+.dtxCo::before{content:'|';display:inline-block;opacity:0.5;width:15px;text-align:center;}/*!sc*/
+.dtxCo:last-child::after{display:none;}/*!sc*/
+data-styled.g94[id="sc-bqOZlw"]{content:"dtxCo,"}/*!sc*/
+.dTiYFg{overflow:hidden;}/*!sc*/
+data-styled.g95[id="sc-gHjUZj"]{content:"dTiYFg,"}/*!sc*/
+.xbCgw{display:flex;flex-wrap:wrap;margin-left:-15px;}/*!sc*/
+data-styled.g96[id="sc-etsZsS"]{content:"xbCgw,"}/*!sc*/
+.cTbyuX{width:9ex;display:inline-block;height:13px;line-height:13px;background-color:#333;border-radius:3px;background-repeat:no-repeat;background-position:6px 4px;font-size:7px;font-family:Verdana,sans-serif;color:white;text-transform:uppercase;text-align:center;font-weight:bold;vertical-align:middle;margin-right:6px;margin-top:2px;}/*!sc*/
+.cTbyuX.get{background-color:#2F8132;}/*!sc*/
+.cTbyuX.post{background-color:#186FAF;}/*!sc*/
+.cTbyuX.put{background-color:#95507c;}/*!sc*/
+.cTbyuX.options{background-color:#947014;}/*!sc*/
+.cTbyuX.patch{background-color:#bf581d;}/*!sc*/
+.cTbyuX.delete{background-color:#cc3333;}/*!sc*/
+.cTbyuX.basic{background-color:#707070;}/*!sc*/
+.cTbyuX.link{background-color:#07818F;}/*!sc*/
+.cTbyuX.head{background-color:#A23DAD;}/*!sc*/
+.cTbyuX.hook{background-color:#32329f;}/*!sc*/
+.cTbyuX.schema{background-color:#707070;}/*!sc*/
+data-styled.g100[id="sc-YlsEq"]{content:"cTbyuX,"}/*!sc*/
+.hptszA{margin:0;padding:0;}/*!sc*/
+.hptszA:first-child{padding-bottom:32px;}/*!sc*/
+.sc-imiQPL .sc-imiQPL{font-size:0.929em;}/*!sc*/
+.dzKyiF{margin:0;padding:0;display:none;}/*!sc*/
+.dzKyiF:first-child{padding-bottom:32px;}/*!sc*/
+.sc-imiQPL .sc-imiQPL{font-size:0.929em;}/*!sc*/
+data-styled.g101[id="sc-imiQPL"]{content:"hptszA,dzKyiF,"}/*!sc*/
+.dvErlr{list-style:none inside none;overflow:hidden;text-overflow:ellipsis;padding:0;}/*!sc*/
+.jdBuQR{list-style:none inside none;overflow:hidden;text-overflow:ellipsis;padding:0;margin-top:15px;}/*!sc*/
+data-styled.g102[id="sc-vIxRm"]{content:"dvErlr,jdBuQR,"}/*!sc*/
+.bUNPrf{cursor:pointer;color:#333333;margin:0;padding:12.5px 20px;display:flex;justify-content:space-between;font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-size:0.929em;text-transform:none;background-color:#fafafa;}/*!sc*/
+.bUNPrf:hover{color:#32329f;background-color:#e1e1e1;}/*!sc*/
+.bUNPrf .sc-eTNem{height:1.5em;width:1.5em;}/*!sc*/
+.bUNPrf .sc-eTNem polygon{fill:#333333;}/*!sc*/
+.dkHaxj{cursor:pointer;color:#333333;margin:0;padding:12.5px 20px;padding-left:40px;display:flex;justify-content:space-between;font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background-color:#fafafa;}/*!sc*/
+.dkHaxj:hover{color:#32329f;background-color:#ededed;}/*!sc*/
+.dkHaxj .sc-eTNem{height:1.5em;width:1.5em;}/*!sc*/
+.dkHaxj .sc-eTNem polygon{fill:#333333;}/*!sc*/
+.bsrUBX{cursor:pointer;color:#333333;margin:0;padding:12.5px 20px;display:flex;justify-content:space-between;font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;opacity:0.7;text-transform:uppercase;font-size:0.8em;padding-bottom:0;cursor:default;background-color:#fafafa;}/*!sc*/
+.bsrUBX .sc-eTNem{height:1.5em;width:1.5em;}/*!sc*/
+.bsrUBX .sc-eTNem polygon{fill:#333333;}/*!sc*/
+.cTbDDl{cursor:pointer;color:#333333;margin:0;padding:12.5px 20px;display:flex;justify-content:space-between;font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background-color:#fafafa;}/*!sc*/
+.cTbDDl:hover{color:#32329f;background-color:#ededed;}/*!sc*/
+.cTbDDl .sc-eTNem{height:1.5em;width:1.5em;}/*!sc*/
+.cTbDDl .sc-eTNem polygon{fill:#333333;}/*!sc*/
+data-styled.g103[id="sc-bjUIxp"]{content:"bUNPrf,dkHaxj,bsrUBX,cTbDDl,"}/*!sc*/
+.isYMas{display:inline-block;vertical-align:middle;width:calc(100% - 38px);overflow:hidden;text-overflow:ellipsis;}/*!sc*/
+data-styled.g104[id="sc-eIPYXM"]{content:"isYMas,"}/*!sc*/
+.gdOopN{font-size:0.8em;margin-top:10px;text-align:center;position:fixed;width:260px;bottom:0;background:#fafafa;}/*!sc*/
+.gdOopN a,.gdOopN a:visited,.gdOopN a:hover{color:#333333!important;padding:5px 0;border-top:1px solid #e1e1e1;text-decoration:none;display:flex;align-items:center;justify-content:center;}/*!sc*/
+.gdOopN img{width:15px;margin-right:5px;}/*!sc*/
+@media screen and (max-width: 50rem){.gdOopN{width:100%;}}/*!sc*/
+data-styled.g105[id="sc-hBgdhb"]{content:"gdOopN,"}/*!sc*/
+.fSgsoL{cursor:pointer;position:relative;margin-bottom:5px;}/*!sc*/
+data-styled.g111[id="sc-fYrVju"]{content:"fSgsoL,"}/*!sc*/
+.hQgYkC{font-family:Courier,monospace;margin-left:10px;flex:1;overflow-x:hidden;text-overflow:ellipsis;}/*!sc*/
+data-styled.g112[id="sc-GkKUH"]{content:"hQgYkC,"}/*!sc*/
+.hxuAbK{outline:0;color:inherit;width:100%;text-align:left;cursor:pointer;padding:10px 30px 10px 20px;border-radius:4px 4px 0 0;background-color:#11171a;display:flex;white-space:nowrap;align-items:center;border:1px solid transparent;border-bottom:0;transition:border-color 0.25s ease;}/*!sc*/
+.hxuAbK ..sc-GkKUH{color:#ffffff;}/*!sc*/
+.hxuAbK:focus{box-shadow:inset 0 2px 2px rgba(0, 0, 0, 0.45),0 2px 0 rgba(128, 128, 128, 0.25);}/*!sc*/
+data-styled.g113[id="sc-jYnRlU"]{content:"hxuAbK,"}/*!sc*/
+.Azdyu{font-size:0.929em;line-height:20px;background-color:#186FAF;color:#ffffff;padding:3px 10px;text-transform:uppercase;font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;margin:0;}/*!sc*/
+.jByYrY{font-size:0.929em;line-height:20px;background-color:#2F8132;color:#ffffff;padding:3px 10px;text-transform:uppercase;font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;margin:0;}/*!sc*/
+data-styled.g114[id="sc-eGgGXh"]{content:"Azdyu,jByYrY,"}/*!sc*/
+.hCIaug{position:absolute;width:100%;z-index:100;background:#fafafa;color:#263238;box-sizing:border-box;box-shadow:0 0 6px rgba(0, 0, 0, 0.33);overflow:hidden;border-bottom-left-radius:4px;border-bottom-right-radius:4px;transition:all 0.25s ease;visibility:hidden;transform:translateY(-50%) scaleY(0);}/*!sc*/
+data-styled.g115[id="sc-fnphAK"]{content:"hCIaug,"}/*!sc*/
+.iJzzeh{padding:10px;}/*!sc*/
+data-styled.g116[id="sc-lkDGKT"]{content:"iJzzeh,"}/*!sc*/
+.kcaYXC{padding:5px;border:1px solid #ccc;background:#fff;word-break:break-all;color:#32329f;}/*!sc*/
+.kcaYXC >span{color:#333333;}/*!sc*/
+data-styled.g117[id="sc-jnldDk"]{content:"kcaYXC,"}/*!sc*/
+.YhJOS{text-transform:lowercase;margin-left:0;line-height:1.5em;}/*!sc*/
+data-styled.g118[id="sc-dVdTox"]{content:"YhJOS,"}/*!sc*/
+.CXagG{display:block;border:0;width:100%;text-align:left;padding:10px;border-radius:2px;margin-bottom:4px;line-height:1.5em;cursor:pointer;color:#00aa13;background-color:rgba(0,170,19,0.07);}/*!sc*/
+.CXagG:focus{outline:auto #00aa13;}/*!sc*/
+.fbbOZt{display:block;border:0;width:100%;text-align:left;padding:10px;border-radius:2px;margin-bottom:4px;line-height:1.5em;cursor:pointer;color:#d41f1c;background-color:rgba(212,31,28,0.07);}/*!sc*/
+.fbbOZt:focus{outline:auto #d41f1c;}/*!sc*/
+data-styled.g120[id="sc-bZTxSr"]{content:"CXagG,fbbOZt,"}/*!sc*/
+.hWKODy{vertical-align:top;}/*!sc*/
+data-styled.g123[id="sc-fYitij"]{content:"hWKODy,"}/*!sc*/
+.dHIUxj{font-size:1.3em;padding:0.2em 0;margin:3em 0 1.1em;color:#333333;font-weight:normal;}/*!sc*/
+data-styled.g124[id="sc-fJIGIq"]{content:"dHIUxj,"}/*!sc*/
+.fsIxqb{margin-bottom:30px;}/*!sc*/
+data-styled.g129[id="sc-iEYWcR"]{content:"fsIxqb,"}/*!sc*/
+.cExjyc{user-select:none;width:20px;height:20px;align-self:center;display:flex;flex-direction:column;color:#32329f;}/*!sc*/
+data-styled.g130[id="sc-iqzjCY"]{content:"cExjyc,"}/*!sc*/
+.jXkNom{width:260px;background-color:#fafafa;overflow:hidden;display:flex;flex-direction:column;backface-visibility:hidden;height:100vh;position:sticky;position:-webkit-sticky;top:0;}/*!sc*/
+@media screen and (max-width: 50rem){.jXkNom{position:fixed;z-index:20;width:100%;background:#fafafa;display:none;}}/*!sc*/
+@media print{.jXkNom{display:none;}}/*!sc*/
+data-styled.g131[id="sc-eXznyQ"]{content:"jXkNom,"}/*!sc*/
+.guEdoh{outline:none;user-select:none;background-color:#f2f2f2;color:#32329f;display:none;cursor:pointer;position:fixed;right:20px;z-index:100;border-radius:50%;box-shadow:0 0 20px rgba(0, 0, 0, 0.3);bottom:44px;width:60px;height:60px;padding:0 20px;}/*!sc*/
+@media screen and (max-width: 50rem){.guEdoh{display:flex;}}/*!sc*/
+.guEdoh svg{color:#0065FB;}/*!sc*/
+@media print{.guEdoh{display:none;}}/*!sc*/
+data-styled.g132[id="sc-kUNMIZ"]{content:"guEdoh,"}/*!sc*/
+.gUwztX{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-size:16px;font-weight:400;line-height:1.5em;color:#333333;display:flex;position:relative;text-align:left;-webkit-font-smoothing:antialiased;font-smoothing:antialiased;text-rendering:optimizeSpeed!important;tap-highlight-color:rgba(0, 0, 0, 0);text-size-adjust:100%;}/*!sc*/
+.gUwztX *{box-sizing:border-box;-webkit-tap-highlight-color:rgba(255, 255, 255, 0);}/*!sc*/
+data-styled.g133[id="sc-dxfSxS"]{content:"gUwztX,"}/*!sc*/
+.etEXlA{z-index:1;position:relative;overflow:hidden;width:calc(100% - 260px);contain:layout;}/*!sc*/
+@media print,screen and (max-width: 50rem){.etEXlA{width:100%;}}/*!sc*/
+data-styled.g134[id="sc-juurIb"]{content:"etEXlA,"}/*!sc*/
+.bytLgM{background:#263238;position:absolute;top:0;bottom:0;right:0;width:calc((100% - 260px) * 0.4);}/*!sc*/
+@media print,screen and (max-width: 75rem){.bytLgM{display:none;}}/*!sc*/
+data-styled.g135[id="sc-emwzQg"]{content:"bytLgM,"}/*!sc*/
+.djWNln{padding:5px 0;}/*!sc*/
+data-styled.g136[id="sc-kjKZap"]{content:"djWNln,"}/*!sc*/
+.jEWSCJ{width:calc(100% - 40px);box-sizing:border-box;margin:0 20px;padding:5px 10px 5px 20px;border:0;border-bottom:1px solid #e1e1e1;font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-weight:bold;font-size:13px;color:#333333;background-color:transparent;outline:none;}/*!sc*/
+data-styled.g137[id="sc-cMdePi"]{content:"jEWSCJ,"}/*!sc*/
+.kPochK{position:absolute;left:20px;height:1.8em;width:0.9em;}/*!sc*/
+.kPochK path{fill:#333333;}/*!sc*/
+data-styled.g138[id="sc-iJrDZr"]{content:"kPochK,"}/*!sc*/
+</style>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
+</head>
+
+<body>
+  
+      <div id="redoc"><div class="sc-dxfSxS gUwztX redoc-wrap"><div class="sc-eXznyQ jXkNom menu-content" style="top:0px;height:calc(100vh - 0px)"><div role="search" class="sc-kjKZap djWNln"><svg class="sc-iJrDZr kPochK search-icon" version="1.1" viewBox="0 0 1000 1000" x="0px" xmlns="http://www.w3.org/2000/svg" y="0px"><path d="M968.2,849.4L667.3,549c83.9-136.5,66.7-317.4-51.7-435.6C477.1-25,252.5-25,113.9,113.4c-138.5,138.3-138.5,362.6,0,501C219.2,730.1,413.2,743,547.6,666.5l301.9,301.4c43.6,43.6,76.9,14.9,104.2-12.4C981,928.3,1011.8,893,968.2,849.4z M524.5,522c-88.9,88.7-233,88.7-321.8,0c-88.9-88.7-88.9-232.6,0-321.3c88.9-88.7,233-88.7,321.8,0C613.4,289.4,613.4,433.3,524.5,522z"></path></svg><input placeholder="Search..." aria-label="Search" type="text" class="sc-cMdePi jEWSCJ search-input" value=""/></div><div class="sc-kMzDYv jBbQWE scrollbar-container undefined"><ul role="menu" class="sc-imiQPL hptszA"><li tabindex="0" depth="1" data-item-id="section/API-de-Recomendacoes-de-Produtos-por-CPF" role="menuitem" aria-label="🎯 API de Recomendações de Produtos por CPF" aria-expanded="false" class="sc-vIxRm dvErlr"><label class="sc-bjUIxp bUNPrf -depth1"><span width="calc(100% - 38px)" title="🎯 API de Recomendações de Produtos por CPF" class="sc-eIPYXM isYMas">🎯 API de Recomendações de Produtos por CPF</span><svg class="sc-eTNem dGmYXL" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></label><ul class="sc-imiQPL dzKyiF"><li tabindex="0" depth="2" data-item-id="section/API-de-Recomendacoes-de-Produtos-por-CPF/Caracteristicas" role="menuitem" aria-label="📋 Características" aria-expanded="false" class="sc-vIxRm dvErlr"><label class="sc-bjUIxp dkHaxj -depth2"><span width="calc(100% - 38px)" title="📋 Características" class="sc-eIPYXM isYMas">📋 Características</span></label></li><li tabindex="0" depth="2" data-item-id="section/API-de-Recomendacoes-de-Produtos-por-CPF/Como-Usar" role="menuitem" aria-label="🚀 Como Usar" aria-expanded="false" class="sc-vIxRm dvErlr"><label class="sc-bjUIxp dkHaxj -depth2"><span width="calc(100% - 38px)" title="🚀 Como Usar" class="sc-eIPYXM isYMas">🚀 Como Usar</span></label></li><li tabindex="0" depth="2" data-item-id="section/API-de-Recomendacoes-de-Produtos-por-CPF/Logicas-de-Recomendacao" role="menuitem" aria-label="🔑 Lógicas de Recomendação" aria-expanded="false" class="sc-vIxRm dvErlr"><label class="sc-bjUIxp dkHaxj -depth2"><span width="calc(100% - 38px)" title="🔑 Lógicas de Recomendação" class="sc-eIPYXM isYMas">🔑 Lógicas de Recomendação</span></label></li><li tabindex="0" depth="2" data-item-id="section/API-de-Recomendacoes-de-Produtos-por-CPF/Contato-and-Suporte" role="menuitem" aria-label="📞 Contato &amp; Suporte" aria-expanded="false" class="sc-vIxRm dvErlr"><label class="sc-bjUIxp dkHaxj -depth2"><span width="calc(100% - 38px)" title="📞 Contato &amp; Suporte" class="sc-eIPYXM isYMas">📞 Contato &amp; Suporte</span></label></li></ul></li><li tabindex="0" depth="0" data-item-id="group/Recomendacoes" role="menuitem" aria-label="Recomendações" aria-expanded="true" class="sc-vIxRm jdBuQR"><label class="sc-bjUIxp bsrUBX -depth0"><span width="calc(100% - 38px)" title="Recomendações" class="sc-eIPYXM isYMas">Recomendações</span></label><ul class="sc-imiQPL hptszA"><li tabindex="0" depth="1" data-item-id="tag/CPF-Recommendations" role="menuitem" aria-label="CPF Recommendations" aria-expanded="false" class="sc-vIxRm dvErlr"><label class="sc-bjUIxp bUNPrf -depth1"><span width="calc(100% - 38px)" title="CPF Recommendations" class="sc-eIPYXM isYMas">CPF Recommendations</span><svg class="sc-eTNem dGmYXL" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></label><ul class="sc-imiQPL dzKyiF"><li tabindex="0" depth="2" data-item-id="tag/CPF-Recommendations/operation/getRecommendationsByCpf" role="menuitem" aria-label="Obter recomendações de produtos por CPF" aria-expanded="false" class="sc-vIxRm dvErlr"><label class="sc-bjUIxp cTbDDl -depth2"><span type="post" class="sc-YlsEq cTbyuX operation-type post">post</span><span tabindex="0" width="calc(100% - 38px)" class="sc-eIPYXM isYMas">Obter recomendações de produtos por CPF</span></label></li></ul></li></ul></li><li tabindex="0" depth="0" data-item-id="group/Gerenciamento" role="menuitem" aria-label="Gerenciamento" aria-expanded="true" class="sc-vIxRm jdBuQR"><label class="sc-bjUIxp bsrUBX -depth0"><span width="calc(100% - 38px)" title="Gerenciamento" class="sc-eIPYXM isYMas">Gerenciamento</span></label><ul class="sc-imiQPL hptszA"><li tabindex="0" depth="1" data-item-id="tag/Job-Status" role="menuitem" aria-label="Job Status" aria-expanded="false" class="sc-vIxRm dvErlr"><label class="sc-bjUIxp bUNPrf -depth1"><span width="calc(100% - 38px)" title="Job Status" class="sc-eIPYXM isYMas">Job Status</span><svg class="sc-eTNem dGmYXL" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></label><ul class="sc-imiQPL dzKyiF"><li tabindex="0" depth="2" data-item-id="tag/Job-Status/operation/getJobStatus" role="menuitem" aria-label="Consultar status de um job" aria-expanded="false" class="sc-vIxRm dvErlr"><label class="sc-bjUIxp cTbDDl -depth2"><span type="get" class="sc-YlsEq cTbyuX operation-type get">get</span><span tabindex="0" width="calc(100% - 38px)" class="sc-eIPYXM isYMas">Consultar status de um job</span></label></li><li tabindex="0" depth="2" data-item-id="tag/Job-Status/operation/getStats" role="menuitem" aria-label="Obter estatísticas da fila de jobs" aria-expanded="false" class="sc-vIxRm dvErlr"><label class="sc-bjUIxp cTbDDl -depth2"><span type="get" class="sc-YlsEq cTbyuX operation-type get">get</span><span tabindex="0" width="calc(100% - 38px)" class="sc-eIPYXM isYMas">Obter estatísticas da fila de jobs</span></label></li></ul></li></ul></li></ul><div class="sc-hBgdhb gdOopN"><a target="_blank" rel="noopener noreferrer" href="https://redocly.com/redoc/">API docs by Redocly</a></div></div></div><div class="sc-kUNMIZ guEdoh"><div class="sc-iqzjCY cExjyc"><svg class="" style="transform:translate(2px, -4px) rotate(180deg);transition:transform 0.2s ease" viewBox="0 0 926.23699 573.74994" version="1.1" x="0px" y="0px" width="15" height="15"><g transform="translate(904.92214,-879.1482)"><path d="
+          m -673.67664,1221.6502 -231.2455,-231.24803 55.6165,
+          -55.627 c 30.5891,-30.59485 56.1806,-55.627 56.8701,-55.627 0.6894,
+          0 79.8637,78.60862 175.9427,174.68583 l 174.6892,174.6858 174.6892,
+          -174.6858 c 96.079,-96.07721 175.253196,-174.68583 175.942696,
+          -174.68583 0.6895,0 26.281,25.03215 56.8701,
+          55.627 l 55.6165,55.627 -231.245496,231.24803 c -127.185,127.1864
+          -231.5279,231.248 -231.873,231.248 -0.3451,0 -104.688,
+          -104.0616 -231.873,-231.248 z
+        " fill="currentColor"></path></g></svg><svg class="" style="transform:translate(2px, 4px);transition:transform 0.2s ease" viewBox="0 0 926.23699 573.74994" version="1.1" x="0px" y="0px" width="15" height="15"><g transform="translate(904.92214,-879.1482)"><path d="
+          m -673.67664,1221.6502 -231.2455,-231.24803 55.6165,
+          -55.627 c 30.5891,-30.59485 56.1806,-55.627 56.8701,-55.627 0.6894,
+          0 79.8637,78.60862 175.9427,174.68583 l 174.6892,174.6858 174.6892,
+          -174.6858 c 96.079,-96.07721 175.253196,-174.68583 175.942696,
+          -174.68583 0.6895,0 26.281,25.03215 56.8701,
+          55.627 l 55.6165,55.627 -231.245496,231.24803 c -127.185,127.1864
+          -231.5279,231.248 -231.873,231.248 -0.3451,0 -104.688,
+          -104.0616 -231.873,-231.248 z
+        " fill="currentColor"></path></g></svg></div></div><div class="sc-juurIb etEXlA api-content"><div class="sc-eDLJxb gCBDNw"><div class="sc-iBdmCa kzumiI"><div class="sc-hLQRIK kjDhDB api-info"><h1 class="sc-fsYeqr sc-crHGWa exLoZF fFuIUI">Emarsys CPF Recommendations API<!-- --> <span>(<!-- -->1.0.0<!-- -->)</span></h1><p>Download OpenAPI specification<!-- -->:</p><div class="sc-iKOlBD sc-cCzKKD cslxVo dqSAMj"><div class="sc-gHjUZj dTiYFg"><div class="sc-etsZsS xbCgw"><span class="sc-bqOZlw dtxCo">API Support<!-- -->:<!-- --> <a href="mailto:support@example.com">support@example.com</a></span> <!-- --> <span class="sc-bqOZlw dtxCo">License:<!-- --> <a href="https://opensource.org/licenses/MIT">MIT</a></span> </div></div></div><div data-role="redoc-summary" html="" class="sc-iKOlBD sc-cCzKKD cslxVo dqSAMj"></div><div data-role="redoc-description" html="" class="sc-iKOlBD sc-cCzKKD cslxVo dqSAMj"></div></div></div></div><div id="section/API-de-Recomendacoes-de-Produtos-por-CPF" data-section-id="section/API-de-Recomendacoes-de-Produtos-por-CPF" class="sc-eDLJxb gCBDNw"><div class="sc-iBdmCa kzumiI"><div class="sc-hLQRIK kjDhDB"><h2 class="sc-qZqnL ebZkXj"><a class="sc-csKIKD bedANz" href="#section/API-de-Recomendacoes-de-Produtos-por-CPF" aria-label="section/API-de-Recomendacoes-de-Produtos-por-CPF"></a>🎯 API de Recomendações de Produtos por CPF</h2></div></div><div class="sc-hLQRIK dXbdRp"><div class="sc-iKOlBD sc-cCzKKD cslxVo dqSAMj redoc-markdown " html="&lt;p&gt;Esta API permite obter recomendações personalizadas de produtos usando &lt;strong&gt;Emarsys Scarab&lt;/strong&gt;
+baseadas no CPF do cliente.&lt;/p&gt;
+"><p>Esta API permite obter recomendações personalizadas de produtos usando <strong>Emarsys Scarab</strong>
+baseadas no CPF do cliente.</p>
+</div></div></div><div id="section/API-de-Recomendacoes-de-Produtos-por-CPF/Caracteristicas" data-section-id="section/API-de-Recomendacoes-de-Produtos-por-CPF/Caracteristicas" class="sc-eDLJxb gCBDNw"><div class="sc-iBdmCa kzumiI"><div class="sc-hLQRIK kjDhDB"><h2 class="sc-jsEegq dVDDPa"><a class="sc-csKIKD bedANz" href="#section/API-de-Recomendacoes-de-Produtos-por-CPF/Caracteristicas" aria-label="section/API-de-Recomendacoes-de-Produtos-por-CPF/Caracteristicas"></a>📋 Características</h2></div></div><div class="sc-hLQRIK dXbdRp"><div class="sc-iKOlBD sc-cCzKKD cslxVo dqSAMj redoc-markdown " html="&lt;ul&gt;
+&lt;li&gt;✅ Recomendações personalizadas por CPF&lt;/li&gt;
+&lt;li&gt;✅ Múltiplas lógicas de recomendação (PERSONAL, RELATED, POPULAR, etc.)&lt;/li&gt;
+&lt;li&gt;✅ Filtros por categoria e exclusão de produtos&lt;/li&gt;
+&lt;li&gt;✅ Sistema de cache inteligente&lt;/li&gt;
+&lt;li&gt;✅ Jobs assíncronos com rastreamento de status&lt;/li&gt;
+&lt;li&gt;✅ Reintentos automáticos&lt;/li&gt;
+&lt;/ul&gt;
+"><ul>
+<li>✅ Recomendações personalizadas por CPF</li>
+<li>✅ Múltiplas lógicas de recomendação (PERSONAL, RELATED, POPULAR, etc.)</li>
+<li>✅ Filtros por categoria e exclusão de produtos</li>
+<li>✅ Sistema de cache inteligente</li>
+<li>✅ Jobs assíncronos com rastreamento de status</li>
+<li>✅ Reintentos automáticos</li>
+</ul>
+</div></div></div><div id="section/API-de-Recomendacoes-de-Produtos-por-CPF/Como-Usar" data-section-id="section/API-de-Recomendacoes-de-Produtos-por-CPF/Como-Usar" class="sc-eDLJxb gCBDNw"><div class="sc-iBdmCa kzumiI"><div class="sc-hLQRIK kjDhDB"><h2 class="sc-jsEegq dVDDPa"><a class="sc-csKIKD bedANz" href="#section/API-de-Recomendacoes-de-Produtos-por-CPF/Como-Usar" aria-label="section/API-de-Recomendacoes-de-Produtos-por-CPF/Como-Usar"></a>🚀 Como Usar</h2></div></div><div class="sc-hLQRIK dXbdRp"><div class="sc-iKOlBD sc-cCzKKD cslxVo dqSAMj redoc-markdown " html="&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Criar Job&lt;/strong&gt;: POST &lt;code&gt;/api/scraping/recommendations/cpf&lt;/code&gt; com seu CPF&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Aguardar&lt;/strong&gt;: O job processa em 15-30 segundos&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Consultar&lt;/strong&gt;: GET &lt;code&gt;/api/scraping/jobs/{id}&lt;/code&gt; para obter resultados&lt;/li&gt;
+&lt;/ol&gt;
+"><ol>
+<li><strong>Criar Job</strong>: POST <code>/api/scraping/recommendations/cpf</code> com seu CPF</li>
+<li><strong>Aguardar</strong>: O job processa em 15-30 segundos</li>
+<li><strong>Consultar</strong>: GET <code>/api/scraping/jobs/{id}</code> para obter resultados</li>
+</ol>
+</div></div></div><div id="section/API-de-Recomendacoes-de-Produtos-por-CPF/Logicas-de-Recomendacao" data-section-id="section/API-de-Recomendacoes-de-Produtos-por-CPF/Logicas-de-Recomendacao" class="sc-eDLJxb gCBDNw"><div class="sc-iBdmCa kzumiI"><div class="sc-hLQRIK kjDhDB"><h2 class="sc-jsEegq dVDDPa"><a class="sc-csKIKD bedANz" href="#section/API-de-Recomendacoes-de-Produtos-por-CPF/Logicas-de-Recomendacao" aria-label="section/API-de-Recomendacoes-de-Produtos-por-CPF/Logicas-de-Recomendacao"></a>🔑 Lógicas de Recomendação</h2></div></div><div class="sc-hLQRIK dXbdRp"><div class="sc-iKOlBD sc-cCzKKD cslxVo dqSAMj redoc-markdown " html="&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Lógica&lt;/th&gt;
+&lt;th&gt;Descrição&lt;/th&gt;
+&lt;th&gt;Caso de Uso&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;PERSONAL&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;Baseado no histórico do usuário&lt;/td&gt;
+&lt;td&gt;Homepage, emails personalizados&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;RELATED&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;Produtos relacionados&lt;/td&gt;
+&lt;td&gt;Página de produto&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;ALSO_BOUGHT&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;Comprados juntos&lt;/td&gt;
+&lt;td&gt;Carrinho, checkout&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;POPULAR&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;Mais vendidos&lt;/td&gt;
+&lt;td&gt;Homepage, categorias&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;CATEGORY&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;Mesma categoria&lt;/td&gt;
+&lt;td&gt;Navegação por categoria&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;CART&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;Baseado no carrinho&lt;/td&gt;
+&lt;td&gt;Página de carrinho&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+"><table>
+<thead>
+<tr>
+<th>Lógica</th>
+<th>Descrição</th>
+<th>Caso de Uso</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>PERSONAL</strong></td>
+<td>Baseado no histórico do usuário</td>
+<td>Homepage, emails personalizados</td>
+</tr>
+<tr>
+<td><strong>RELATED</strong></td>
+<td>Produtos relacionados</td>
+<td>Página de produto</td>
+</tr>
+<tr>
+<td><strong>ALSO_BOUGHT</strong></td>
+<td>Comprados juntos</td>
+<td>Carrinho, checkout</td>
+</tr>
+<tr>
+<td><strong>POPULAR</strong></td>
+<td>Mais vendidos</td>
+<td>Homepage, categorias</td>
+</tr>
+<tr>
+<td><strong>CATEGORY</strong></td>
+<td>Mesma categoria</td>
+<td>Navegação por categoria</td>
+</tr>
+<tr>
+<td><strong>CART</strong></td>
+<td>Baseado no carrinho</td>
+<td>Página de carrinho</td>
+</tr>
+</tbody></table>
+</div></div></div><div id="section/API-de-Recomendacoes-de-Produtos-por-CPF/Contato-and-Suporte" data-section-id="section/API-de-Recomendacoes-de-Produtos-por-CPF/Contato-and-Suporte" class="sc-eDLJxb gCBDNw"><div class="sc-iBdmCa kzumiI"><div class="sc-hLQRIK kjDhDB"><h2 class="sc-jsEegq dVDDPa"><a class="sc-csKIKD bedANz" href="#section/API-de-Recomendacoes-de-Produtos-por-CPF/Contato-and-Suporte" aria-label="section/API-de-Recomendacoes-de-Produtos-por-CPF/Contato-and-Suporte"></a>📞 Contato &amp; Suporte</h2></div></div><div class="sc-hLQRIK dXbdRp"><div class="sc-iKOlBD sc-cCzKKD cslxVo dqSAMj redoc-markdown " html="&lt;p&gt;Para mais informações, consulte a &lt;a href=&quot;https://github.com/seu-repo&quot;&gt;documentação completa&lt;/a&gt;.&lt;/p&gt;
+"><p>Para mais informações, consulte a <a href="https://github.com/seu-repo">documentação completa</a>.</p>
+</div></div></div><div id="tag/CPF-Recommendations" data-section-id="tag/CPF-Recommendations" class="sc-eDLJxb gCBDNw"><div class="sc-iBdmCa kzumiI"><div class="sc-hLQRIK kjDhDB"><h2 class="sc-qZqnL ebZkXj"><a class="sc-csKIKD bedANz" href="#tag/CPF-Recommendations" aria-label="tag/CPF-Recommendations"></a>CPF Recommendations</h2></div></div><div class="sc-hLQRIK dXbdRp"><div class="sc-iKOlBD sc-cCzKKD cslxVo dqSAMj redoc-markdown " html="&lt;p&gt;Endpoint para obter recomendações de produtos por CPF&lt;/p&gt;
+"><p>Endpoint para obter recomendações de produtos por CPF</p>
+</div></div></div><div id="tag/CPF-Recommendations/operation/getRecommendationsByCpf" data-section-id="tag/CPF-Recommendations/operation/getRecommendationsByCpf" class="sc-eDLJxb kHlVgP"><div data-section-id="operation/getRecommendationsByCpf" id="operation/getRecommendationsByCpf" class="sc-iBdmCa kzumiI"><div class="sc-hLQRIK kjDhDB"><h2 class="sc-qZqnL ebZkXj"><a class="sc-csKIKD bedANz" href="#tag/CPF-Recommendations/operation/getRecommendationsByCpf" aria-label="tag/CPF-Recommendations/operation/getRecommendationsByCpf"></a>Obter recomendações de produtos por CPF<!-- --> </h2><div class="sc-iEYWcR fsIxqb"><div html="&lt;p&gt;Cria um job assíncrono para obter recomendações personalizadas de produtos
+usando Emarsys Scarab baseado no CPF do cliente.&lt;/p&gt;
+&lt;h3 id=&quot;📝-como-funciona&quot;&gt;📝 Como Funciona&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;Você envia uma requisição com o CPF&lt;/li&gt;
+&lt;li&gt;O sistema cria um job e retorna um ID&lt;/li&gt;
+&lt;li&gt;O job processa em background (15-30 segundos)&lt;/li&gt;
+&lt;li&gt;Você consulta o status usando o ID do job&lt;/li&gt;
+&lt;li&gt;Quando completo, os produtos estão no resultado&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&quot;⚡-exemplo-rápido&quot;&gt;⚡ Exemplo Rápido&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# 1. Criar job (com autenticação)&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;curl&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;-X&lt;/span&gt; POST http://localhost:3000/api/scraping/recommendations/cpf &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;token parameter variable&quot;&gt;-H&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;Content-Type: application/json&quot;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;token parameter variable&quot;&gt;-H&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;X-API-Key: sua-api-key&quot;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;token parameter variable&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#x27;{&quot;cpf&quot;:&quot;12345678900&quot;,&quot;recommendLogic&quot;:&quot;PERSONAL&quot;,&quot;limit&quot;:10}&#x27;&lt;/span&gt;
+
+&lt;span class=&quot;token comment&quot;&gt;# Resposta: {&quot;id&quot;:&quot;123&quot;,&quot;status&quot;:&quot;pending&quot;}&lt;/span&gt;
+
+&lt;span class=&quot;token comment&quot;&gt;# 2. Consultar resultado (após 15-30s)&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;curl&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;-H&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;X-API-Key: sua-api-key&quot;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+  http://localhost:3000/api/scraping/jobs/123
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;🔥-dicas&quot;&gt;🔥 Dicas&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Use &lt;code&gt;PERSONAL&lt;/code&gt; para recomendações baseadas no histórico&lt;/li&gt;
+&lt;li&gt;Configure &lt;code&gt;useCache: true&lt;/code&gt; para melhor performance&lt;/li&gt;
+&lt;li&gt;Limite entre 5-20 produtos para melhor UX&lt;/li&gt;
+&lt;/ul&gt;
+" class="sc-iKOlBD sc-cCzKKD cslxVo dqSAMj"><p>Cria um job assíncrono para obter recomendações personalizadas de produtos
+usando Emarsys Scarab baseado no CPF do cliente.</p>
+<h3 id="📝-como-funciona">📝 Como Funciona</h3>
+<ol>
+<li>Você envia uma requisição com o CPF</li>
+<li>O sistema cria um job e retorna um ID</li>
+<li>O job processa em background (15-30 segundos)</li>
+<li>Você consulta o status usando o ID do job</li>
+<li>Quando completo, os produtos estão no resultado</li>
+</ol>
+<h3 id="⚡-exemplo-rápido">⚡ Exemplo Rápido</h3>
+<pre><code class="language-bash"><span class="token comment"># 1. Criar job (com autenticação)</span>
+<span class="token function">curl</span> <span class="token parameter variable">-X</span> POST http://localhost:3000/api/scraping/recommendations/cpf <span class="token punctuation">\</span>
+  <span class="token parameter variable">-H</span> <span class="token string">"Content-Type: application/json"</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">-H</span> <span class="token string">"X-API-Key: sua-api-key"</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">-d</span> <span class="token string">'{"cpf":"12345678900","recommendLogic":"PERSONAL","limit":10}'</span>
+
+<span class="token comment"># Resposta: {"id":"123","status":"pending"}</span>
+
+<span class="token comment"># 2. Consultar resultado (após 15-30s)</span>
+<span class="token function">curl</span> <span class="token parameter variable">-H</span> <span class="token string">"X-API-Key: sua-api-key"</span> <span class="token punctuation">\</span>
+  http://localhost:3000/api/scraping/jobs/123
+</code></pre>
+<h3 id="🔥-dicas">🔥 Dicas</h3>
+<ul>
+<li>Use <code>PERSONAL</code> para recomendações baseadas no histórico</li>
+<li>Configure <code>useCache: true</code> para melhor performance</li>
+<li>Limite entre 5-20 produtos para melhor UX</li>
+</ul>
+</div></div><div class="sc-ftxyaL bJYtcx"><div class="sc-cZqa-dg cqXlxf"><h5 class="sc-irLwvM sc-jPpdkS cidbli ddxOHS">Authorizations:</h5><svg class="sc-eTNem cjEnym" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></div><div class="sc-jSUerV jzVzGc"><span class="sc-drMfDT jcbyVq"><span class="sc-hNDKOa ja-dsOl"><i>ApiKeyHeader</i></span></span><span class="sc-drMfDT jcbyVq"><span class="sc-hNDKOa ja-dsOl"><i>BearerAuth</i></span></span><span class="sc-drMfDT jcbyVq"><span class="sc-hNDKOa ja-dsOl"><i>ApiKeyQuery</i></span></span></div></div><h5 class="sc-irLwvM cidbli">Request Body schema: <span class="sc-gYrpUK evWhhd">application/json</span><div class="sc-gUjXxo sc-eKzwpd sc-dVdTox cMzMHg BbXSm YhJOS">required</div></h5><div html="" class="sc-iKOlBD sc-cCzKKD cslxVo dqSAMj"></div><table class="sc-hIPCAM fKfEUC"><tbody><tr class=""><td kind="field" title="cpf" class="sc-hABAzn sc-fHekdU qtkOl jNLeNf"><span class="sc-ifyqMW jAiheG"></span><span class="property-name">cpf</span><div class="sc-gUjXxo sc-eKzwpd cMzMHg BbXSm">required</div></td><td class="sc-blmETN dbUkkC"><div><div><span class="sc-gUjXxo sc-kZOrUD cMzMHg hhCpbw"></span><span class="sc-gUjXxo sc-iLXwom cMzMHg fIGxvH">string</span><span class="sc-gUjXxo sc-ejCLfw cMzMHg hvQkTi">^\d{3}\.\d{3}\.\d{3}-\d{2}$|^\d{11}$</span></div> <div><div html="&lt;p&gt;CPF do cliente (com ou sem formatação)&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Formatos aceitos:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;123.456.789-00&lt;/code&gt; (com pontos e hífen)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;12345678900&lt;/code&gt; (apenas números)&lt;/li&gt;
+&lt;/ul&gt;
+" class="sc-iKOlBD sc-cCzKKD cslxVo jLDXvl"><p>CPF do cliente (com ou sem formatação)</p>
+<p><strong>Formatos aceitos:</strong></p>
+<ul>
+<li><code>123.456.789-00</code> (com pontos e hífen)</li>
+<li><code>12345678900</code> (apenas números)</li>
+</ul>
+</div></div></div></td></tr><tr class=""><td kind="field" title="scarabId" class="sc-hABAzn sc-fHekdU qtkOl jNLeNf"><span class="sc-ifyqMW jAiheG"></span><span class="property-name">scarabId</span></td><td class="sc-blmETN dbUkkC"><div><div><span class="sc-gUjXxo sc-kZOrUD cMzMHg hhCpbw"></span><span class="sc-gUjXxo sc-iLXwom cMzMHg fIGxvH">string</span></div> <div><div html="&lt;p&gt;ID do Scarab (merchant ID do Emarsys)&lt;/p&gt;
+&lt;p&gt;Se não fornecido, usa o configurado em &lt;code&gt;.env&lt;/code&gt;&lt;/p&gt;
+" class="sc-iKOlBD sc-cCzKKD cslxVo jLDXvl"><p>ID do Scarab (merchant ID do Emarsys)</p>
+<p>Se não fornecido, usa o configurado em <code>.env</code></p>
+</div></div></div></td></tr><tr class=""><td kind="field" title="recommendLogic" class="sc-hABAzn sc-fHekdU qtkOl jNLeNf"><span class="sc-ifyqMW jAiheG"></span><span class="property-name">recommendLogic</span></td><td class="sc-blmETN dbUkkC"><div><div><span class="sc-gUjXxo sc-kZOrUD cMzMHg hhCpbw"></span><span class="sc-gUjXxo sc-iLXwom cMzMHg fIGxvH">string</span></div><div><span class="sc-gUjXxo cMzMHg"> <!-- -->Default:<!-- --> </span> <span class="sc-gUjXxo sc-ldgPul cMzMHg cNHQfj">&quot;PERSONAL&quot;</span></div><div><span class="sc-gUjXxo cMzMHg"> <!-- -->Enum<!-- -->:</span> <span class="sc-gUjXxo sc-ldgPul cMzMHg cNHQfj">&quot;PERSONAL&quot;</span> <span class="sc-gUjXxo sc-ldgPul cMzMHg cNHQfj">&quot;RELATED&quot;</span> <span class="sc-gUjXxo sc-ldgPul cMzMHg cNHQfj">&quot;ALSO_BOUGHT&quot;</span> <span class="sc-gUjXxo sc-ldgPul cMzMHg cNHQfj">&quot;POPULAR&quot;</span> <span class="sc-gUjXxo sc-ldgPul cMzMHg cNHQfj">&quot;CATEGORY&quot;</span> <span class="sc-gUjXxo sc-ldgPul cMzMHg cNHQfj">&quot;CART&quot;</span> </div> <div><div html="&lt;p&gt;Lógica de recomendação a ser usada&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Opções disponíveis:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;PERSONAL&lt;/code&gt;: Recomendações personalizadas baseadas no histórico&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;RELATED&lt;/code&gt;: Produtos relacionados&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ALSO_BOUGHT&lt;/code&gt;: Produtos comprados juntos&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;POPULAR&lt;/code&gt;: Produtos mais populares&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;CATEGORY&lt;/code&gt;: Produtos da mesma categoria&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;CART&lt;/code&gt;: Baseado no carrinho atual&lt;/li&gt;
+&lt;/ul&gt;
+" class="sc-iKOlBD sc-cCzKKD cslxVo jLDXvl"><p>Lógica de recomendação a ser usada</p>
+<p><strong>Opções disponíveis:</strong></p>
+<ul>
+<li><code>PERSONAL</code>: Recomendações personalizadas baseadas no histórico</li>
+<li><code>RELATED</code>: Produtos relacionados</li>
+<li><code>ALSO_BOUGHT</code>: Produtos comprados juntos</li>
+<li><code>POPULAR</code>: Produtos mais populares</li>
+<li><code>CATEGORY</code>: Produtos da mesma categoria</li>
+<li><code>CART</code>: Baseado no carrinho atual</li>
+</ul>
+</div></div></div></td></tr><tr class=""><td kind="field" title="limit" class="sc-hABAzn sc-fHekdU qtkOl jNLeNf"><span class="sc-ifyqMW jAiheG"></span><span class="property-name">limit</span></td><td class="sc-blmETN dbUkkC"><div><div><span class="sc-gUjXxo sc-kZOrUD cMzMHg hhCpbw"></span><span class="sc-gUjXxo sc-iLXwom cMzMHg fIGxvH">integer</span><span> <span class="sc-gUjXxo sc-cmfmEr cMzMHg fNDDrI"> <!-- -->[ 1 .. 100 ]<!-- --> </span></span></div><div><span class="sc-gUjXxo cMzMHg"> <!-- -->Default:<!-- --> </span> <span class="sc-gUjXxo sc-ldgPul cMzMHg cNHQfj">10</span></div> <div><div html="&lt;p&gt;Número máximo de produtos a recomendar&lt;/p&gt;
+" class="sc-iKOlBD sc-cCzKKD cslxVo jLDXvl"><p>Número máximo de produtos a recomendar</p>
+</div></div></div></td></tr><tr class=""><td kind="field" title="includeCategories" class="sc-hABAzn sc-fHekdU qtkOl jNLeNf"><span class="sc-ifyqMW jAiheG"></span><span class="property-name">includeCategories</span></td><td class="sc-blmETN dbUkkC"><div><div><span class="sc-gUjXxo sc-kZOrUD cMzMHg hhCpbw">Array of </span><span class="sc-gUjXxo sc-iLXwom cMzMHg fIGxvH">strings</span></div> <div><div html="&lt;p&gt;Lista de categorias para incluir nas recomendações&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Formato:&lt;/strong&gt; Use &lt;code&gt;&amp;gt;&lt;/code&gt; para separar níveis&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Exemplo:&lt;/strong&gt; &lt;code&gt;[&amp;quot;Eletrônicos&amp;gt;Smartphones&amp;quot;, &amp;quot;Moda&amp;gt;Feminino&amp;gt;Vestidos&amp;quot;]&lt;/code&gt;&lt;/p&gt;
+" class="sc-iKOlBD sc-cCzKKD cslxVo jLDXvl"><p>Lista de categorias para incluir nas recomendações</p>
+<p><strong>Formato:</strong> Use <code>&gt;</code> para separar níveis</p>
+<p><strong>Exemplo:</strong> <code>[&quot;Eletrônicos&gt;Smartphones&quot;, &quot;Moda&gt;Feminino&gt;Vestidos&quot;]</code></p>
+</div></div></div></td></tr><tr class=""><td kind="field" title="excludeItems" class="sc-hABAzn sc-fHekdU qtkOl jNLeNf"><span class="sc-ifyqMW jAiheG"></span><span class="property-name">excludeItems</span></td><td class="sc-blmETN dbUkkC"><div><div><span class="sc-gUjXxo sc-kZOrUD cMzMHg hhCpbw">Array of </span><span class="sc-gUjXxo sc-iLXwom cMzMHg fIGxvH">strings</span></div> <div><div html="&lt;p&gt;IDs de produtos a serem excluídos das recomendações&lt;/p&gt;
+&lt;p&gt;Útil para não recomendar produtos já comprados ou visualizados&lt;/p&gt;
+" class="sc-iKOlBD sc-cCzKKD cslxVo jLDXvl"><p>IDs de produtos a serem excluídos das recomendações</p>
+<p>Útil para não recomendar produtos já comprados ou visualizados</p>
+</div></div></div></td></tr><tr class=""><td kind="field" title="timeout" class="sc-hABAzn sc-fHekdU qtkOl jNLeNf"><span class="sc-ifyqMW jAiheG"></span><span class="property-name">timeout</span></td><td class="sc-blmETN dbUkkC"><div><div><span class="sc-gUjXxo sc-kZOrUD cMzMHg hhCpbw"></span><span class="sc-gUjXxo sc-iLXwom cMzMHg fIGxvH">integer</span><span> <span class="sc-gUjXxo sc-cmfmEr cMzMHg fNDDrI"> <!-- -->[ 5000 .. 300000 ]<!-- --> </span></span></div><div><span class="sc-gUjXxo cMzMHg"> <!-- -->Default:<!-- --> </span> <span class="sc-gUjXxo sc-ldgPul cMzMHg cNHQfj">30000</span></div> <div><div html="&lt;p&gt;Timeout em milissegundos&lt;/p&gt;
+" class="sc-iKOlBD sc-cCzKKD cslxVo jLDXvl"><p>Timeout em milissegundos</p>
+</div></div></div></td></tr><tr class=""><td kind="field" title="headless" class="sc-hABAzn sc-fHekdU qtkOl jNLeNf"><span class="sc-ifyqMW jAiheG"></span><span class="property-name">headless</span></td><td class="sc-blmETN dbUkkC"><div><div><span class="sc-gUjXxo sc-kZOrUD cMzMHg hhCpbw"></span><span class="sc-gUjXxo sc-iLXwom cMzMHg fIGxvH">boolean</span></div><div><span class="sc-gUjXxo cMzMHg"> <!-- -->Default:<!-- --> </span> <span class="sc-gUjXxo sc-ldgPul cMzMHg cNHQfj">true</span></div> <div><div html="&lt;p&gt;Se deve usar modo headless (sem interface gráfica)&lt;/p&gt;
+" class="sc-iKOlBD sc-cCzKKD cslxVo jLDXvl"><p>Se deve usar modo headless (sem interface gráfica)</p>
+</div></div></div></td></tr><tr class="last "><td kind="field" title="useCache" class="sc-hABAzn sc-fHekdU qtkOl jNLeNf"><span class="sc-ifyqMW jAiheG"></span><span class="property-name">useCache</span></td><td class="sc-blmETN dbUkkC"><div><div><span class="sc-gUjXxo sc-kZOrUD cMzMHg hhCpbw"></span><span class="sc-gUjXxo sc-iLXwom cMzMHg fIGxvH">boolean</span></div><div><span class="sc-gUjXxo cMzMHg"> <!-- -->Default:<!-- --> </span> <span class="sc-gUjXxo sc-ldgPul cMzMHg cNHQfj">true</span></div> <div><div html="&lt;p&gt;Se deve usar cache&lt;/p&gt;
+&lt;p&gt;Resultados são cacheados por 1 hora baseado em: CPF + lógica + limite&lt;/p&gt;
+" class="sc-iKOlBD sc-cCzKKD cslxVo jLDXvl"><p>Se deve usar cache</p>
+<p>Resultados são cacheados por 1 hora baseado em: CPF + lógica + limite</p>
+</div></div></div></td></tr></tbody></table><div><h3 class="sc-fJIGIq dHIUxj">Responses</h3><div><button class="sc-bZTxSr CXagG"><svg class="sc-eTNem bjXKRK" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg><strong class="sc-fYitij hWKODy">202<!-- --> </strong><div html="&lt;p&gt;Job criado com sucesso. O processamento está em andamento.
+Use o &lt;code&gt;id&lt;/code&gt; retornado para consultar o status.&lt;/p&gt;
+" class="sc-iKOlBD sc-cCzKKD sc-ckdFjQ cslxVo eTTtlZ hKuZJA"><p>Job criado com sucesso. O processamento está em andamento.
+Use o <code>id</code> retornado para consultar o status.</p>
+</div></button></div><div><button class="sc-bZTxSr fbbOZt"><svg class="sc-eTNem iPQVSx" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg><strong class="sc-fYitij hWKODy">400<!-- --> </strong><div html="&lt;p&gt;Requisição inválida (CPF inválido, parâmetros incorretos)&lt;/p&gt;
+" class="sc-iKOlBD sc-cCzKKD sc-ckdFjQ cslxVo eTTtlZ hKuZJA"><p>Requisição inválida (CPF inválido, parâmetros incorretos)</p>
+</div></button></div><div><button class="sc-bZTxSr fbbOZt"><svg class="sc-eTNem iPQVSx" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg><strong class="sc-fYitij hWKODy">401<!-- --> </strong><div html="&lt;p&gt;Não autorizado - API Key inválida ou ausente&lt;/p&gt;
+" class="sc-iKOlBD sc-cCzKKD sc-ckdFjQ cslxVo eTTtlZ hKuZJA"><p>Não autorizado - API Key inválida ou ausente</p>
+</div></button></div><div><button class="sc-bZTxSr fbbOZt"><svg class="sc-eTNem iPQVSx" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg><strong class="sc-fYitij hWKODy">500<!-- --> </strong><div html="&lt;p&gt;Erro interno do servidor&lt;/p&gt;
+" class="sc-iKOlBD sc-cCzKKD sc-ckdFjQ cslxVo eTTtlZ hKuZJA"><p>Erro interno do servidor</p>
+</div></button></div></div></div><div class="sc-jTQDnk sc-gLLvbB gzZFRd bTNKSN"><div class="sc-fYrVju fSgsoL"><button class="sc-jYnRlU hxuAbK"><span type="post" class="sc-eGgGXh Azdyu http-verb post">post</span><span class="sc-GkKUH hQgYkC">/api/scraping/recommendations/cpf</span><svg class="sc-eTNem cptRNl" style="margin-right:-25px" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button><div aria-hidden="true" class="sc-fnphAK hCIaug"><div class="sc-lkDGKT iJzzeh"><div html="&lt;p&gt;Servidor de Desenvolvimento&lt;/p&gt;
+" class="sc-iKOlBD sc-cCzKKD cslxVo jLDXvl"><p>Servidor de Desenvolvimento</p>
+</div><div tabindex="0" role="button"><div class="sc-jnldDk kcaYXC"><span>http://localhost:3000</span>/api/scraping/recommendations/cpf</div></div></div><div class="sc-lkDGKT iJzzeh"><div html="&lt;p&gt;Servidor de Produção&lt;/p&gt;
+" class="sc-iKOlBD sc-cCzKKD cslxVo jLDXvl"><p>Servidor de Produção</p>
+</div><div tabindex="0" role="button"><div class="sc-jnldDk kcaYXC"><span>https://api.production.com</span>/api/scraping/recommendations/cpf</div></div></div></div></div><div><h3 class="sc-kFCscd kEEgVT"> <!-- -->Request samples<!-- --> </h3><div class="sc-cyZbSl buXd" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="react-tabs__tab react-tabs__tab--selected" role="tab" id="tab_R_157da_0" aria-selected="true" aria-disabled="false" aria-controls="panel_R_157da_0" tabindex="0" data-rttab="true">Payload</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel_R_157da_0" aria-labelledby="tab_R_157da_0"><div><div class="sc-cPtzYx fFQIef"><span class="sc-bCvmcK dIZRkC">Content type</span><div class="sc-dQmhJb ctQKNy">application/json</div></div><div class="sc-hVcFhS jTWsvS"><div class="sc-cPtzYx fFQIef"><span class="sc-bCvmcK dIZRkC">Example</span><div class="sc-jIBmdN sc-BCEsg jxoQhL bKZwjg"><svg class="sc-ilxdoe dcIYrC" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="Requisição Básica" selected="">Requisição Básica</option><option value="Com Filtros de Categoria">Com Filtros de Categoria</option><option value="Com Exclusões">Com Exclusões</option><option value="Produtos Populares">Produtos Populares</option></select><label>Requisição Básica</label></div></div><div><div class="sc-cSxQHq bDQDNm"><div class="sc-gjLKRm hOxdxq"><button><div class="sc-jdHJyF cUpQkY">Copy</div></button></div><div tabindex="0" class="sc-iKOlBD cslxVo sc-jMbUWf izDcBD"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable "><span class="property token string">"cpf"</span>: <span class="token string">&quot;12345678900&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"recommendLogic"</span>: <span class="token string">&quot;PERSONAL&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"limit"</span>: <span class="token number">10</span></div></li></ul><span class="token punctuation">}</span></code></div></div></div></div></div></div></div></div></div><div><h3 class="sc-kFCscd kEEgVT"> <!-- -->Response samples<!-- --> </h3><div class="sc-cyZbSl buXd" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="tab-success react-tabs__tab--selected" role="tab" id="tab_R_177da_0" aria-selected="true" aria-disabled="false" aria-controls="panel_R_177da_0" tabindex="0" data-rttab="true">202</li><li class="tab-error" role="tab" id="tab_R_177da_1" aria-selected="false" aria-disabled="false" aria-controls="panel_R_177da_1" data-rttab="true">400</li><li class="tab-error" role="tab" id="tab_R_177da_2" aria-selected="false" aria-disabled="false" aria-controls="panel_R_177da_2" data-rttab="true">401</li><li class="tab-error" role="tab" id="tab_R_177da_3" aria-selected="false" aria-disabled="false" aria-controls="panel_R_177da_3" data-rttab="true">500</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel_R_177da_0" aria-labelledby="tab_R_177da_0"><div><div class="sc-cPtzYx fFQIef"><span class="sc-bCvmcK dIZRkC">Content type</span><div class="sc-dQmhJb ctQKNy">application/json</div></div><div class="sc-hVcFhS jTWsvS"><div class="sc-cSxQHq bDQDNm"><div class="sc-gjLKRm hOxdxq"><button><div class="sc-jdHJyF cUpQkY">Copy</div></button></div><div tabindex="0" class="sc-iKOlBD cslxVo sc-jMbUWf izDcBD"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable "><span class="property token string">"id"</span>: <span class="token string">&quot;123&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"status"</span>: <span class="token string">&quot;pending&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"startedAt"</span>: <span class="token string">&quot;2024-01-20T10:00:00.000Z&quot;</span></div></li></ul><span class="token punctuation">}</span></code></div></div></div></div></div></div><div class="react-tabs__tab-panel" role="tabpanel" id="panel_R_177da_1" aria-labelledby="tab_R_177da_1"></div><div class="react-tabs__tab-panel" role="tabpanel" id="panel_R_177da_2" aria-labelledby="tab_R_177da_2"></div><div class="react-tabs__tab-panel" role="tabpanel" id="panel_R_177da_3" aria-labelledby="tab_R_177da_3"></div></div></div></div></div></div><div id="tag/Job-Status" data-section-id="tag/Job-Status" class="sc-eDLJxb gCBDNw"><div class="sc-iBdmCa kzumiI"><div class="sc-hLQRIK kjDhDB"><h2 class="sc-qZqnL ebZkXj"><a class="sc-csKIKD bedANz" href="#tag/Job-Status" aria-label="tag/Job-Status"></a>Job Status</h2></div></div><div class="sc-hLQRIK dXbdRp"><div class="sc-iKOlBD sc-cCzKKD cslxVo dqSAMj redoc-markdown " html="&lt;p&gt;Endpoints para gerenciar e consultar jobs&lt;/p&gt;
+"><p>Endpoints para gerenciar e consultar jobs</p>
+</div></div></div><div id="tag/Job-Status/operation/getJobStatus" data-section-id="tag/Job-Status/operation/getJobStatus" class="sc-eDLJxb kHlVgP"><div data-section-id="operation/getJobStatus" id="operation/getJobStatus" class="sc-iBdmCa kzumiI"><div class="sc-hLQRIK kjDhDB"><h2 class="sc-qZqnL ebZkXj"><a class="sc-csKIKD bedANz" href="#tag/Job-Status/operation/getJobStatus" aria-label="tag/Job-Status/operation/getJobStatus"></a>Consultar status de um job<!-- --> </h2><div class="sc-iEYWcR fsIxqb"><div html="&lt;p&gt;Obtém o status e resultado de um job de recomendações.&lt;/p&gt;
+&lt;h3 id=&quot;📊-status-possíveis&quot;&gt;📊 Status Possíveis&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;pending&lt;/strong&gt;: Job criado, aguardando processamento&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;processing&lt;/strong&gt;: Job em execução&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;completed&lt;/strong&gt;: Job concluído com sucesso&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;failed&lt;/strong&gt;: Job falhou (veja campo &lt;code&gt;error&lt;/code&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;⏱️-tempo-de-processamento&quot;&gt;⏱️ Tempo de Processamento&lt;/h3&gt;
+&lt;p&gt;Normalmente: 15-30 segundos&lt;/p&gt;
+&lt;h3 id=&quot;💡-polling&quot;&gt;💡 Polling&lt;/h3&gt;
+&lt;p&gt;Consulte a cada 2-3 segundos até status = &amp;quot;completed&amp;quot;&lt;/p&gt;
+" class="sc-iKOlBD sc-cCzKKD cslxVo dqSAMj"><p>Obtém o status e resultado de um job de recomendações.</p>
+<h3 id="📊-status-possíveis">📊 Status Possíveis</h3>
+<ul>
+<li><strong>pending</strong>: Job criado, aguardando processamento</li>
+<li><strong>processing</strong>: Job em execução</li>
+<li><strong>completed</strong>: Job concluído com sucesso</li>
+<li><strong>failed</strong>: Job falhou (veja campo <code>error</code>)</li>
+</ul>
+<h3 id="⏱️-tempo-de-processamento">⏱️ Tempo de Processamento</h3>
+<p>Normalmente: 15-30 segundos</p>
+<h3 id="💡-polling">💡 Polling</h3>
+<p>Consulte a cada 2-3 segundos até status = &quot;completed&quot;</p>
+</div></div><div class="sc-ftxyaL bJYtcx"><div class="sc-cZqa-dg cqXlxf"><h5 class="sc-irLwvM sc-jPpdkS cidbli ddxOHS">Authorizations:</h5><svg class="sc-eTNem cjEnym" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></div><div class="sc-jSUerV jzVzGc"><span class="sc-drMfDT jcbyVq"><span class="sc-hNDKOa ja-dsOl"><i>ApiKeyHeader</i></span></span><span class="sc-drMfDT jcbyVq"><span class="sc-hNDKOa ja-dsOl"><i>BearerAuth</i></span></span><span class="sc-drMfDT jcbyVq"><span class="sc-hNDKOa ja-dsOl"><i>ApiKeyQuery</i></span></span></div></div><div><h5 class="sc-irLwvM cidbli">path<!-- --> Parameters</h5><table class="sc-hIPCAM fKfEUC"><tbody><tr class="last "><td kind="field" title="id" class="sc-hABAzn sc-fHekdU qtkOl jNLeNf"><span class="sc-ifyqMW jAiheG"></span><span class="property-name">id</span><div class="sc-gUjXxo sc-eKzwpd cMzMHg BbXSm">required</div></td><td class="sc-blmETN dbUkkC"><div><div><span class="sc-gUjXxo sc-kZOrUD cMzMHg hhCpbw"></span><span class="sc-gUjXxo sc-iLXwom cMzMHg fIGxvH">string</span></div> <div><span class="sc-gUjXxo cMzMHg"> <!-- -->Example:<!-- --> </span> <span class="sc-gUjXxo sc-ldgPul cMzMHg cNHQfj">123</span></div><div><div html="&lt;p&gt;ID do job retornado ao criar a requisição&lt;/p&gt;
+" class="sc-iKOlBD sc-cCzKKD cslxVo jLDXvl"><p>ID do job retornado ao criar a requisição</p>
+</div></div></div></td></tr></tbody></table></div><div><h3 class="sc-fJIGIq dHIUxj">Responses</h3><div><button class="sc-bZTxSr CXagG"><svg class="sc-eTNem bjXKRK" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg><strong class="sc-fYitij hWKODy">200<!-- --> </strong><div html="&lt;p&gt;Status do job obtido com sucesso&lt;/p&gt;
+" class="sc-iKOlBD sc-cCzKKD sc-ckdFjQ cslxVo eTTtlZ hKuZJA"><p>Status do job obtido com sucesso</p>
+</div></button></div><div><button class="sc-bZTxSr fbbOZt"><svg class="sc-eTNem iPQVSx" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg><strong class="sc-fYitij hWKODy">401<!-- --> </strong><div html="&lt;p&gt;Não autorizado - API Key inválida ou ausente&lt;/p&gt;
+" class="sc-iKOlBD sc-cCzKKD sc-ckdFjQ cslxVo eTTtlZ hKuZJA"><p>Não autorizado - API Key inválida ou ausente</p>
+</div></button></div><div><button class="sc-bZTxSr fbbOZt"><svg class="sc-eTNem iPQVSx" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg><strong class="sc-fYitij hWKODy">404<!-- --> </strong><div html="&lt;p&gt;Job não encontrado&lt;/p&gt;
+" class="sc-iKOlBD sc-cCzKKD sc-ckdFjQ cslxVo eTTtlZ hKuZJA"><p>Job não encontrado</p>
+</div></button></div></div></div><div class="sc-jTQDnk sc-gLLvbB gzZFRd bTNKSN"><div class="sc-fYrVju fSgsoL"><button class="sc-jYnRlU hxuAbK"><span type="get" class="sc-eGgGXh jByYrY http-verb get">get</span><span class="sc-GkKUH hQgYkC">/api/scraping/jobs/{id}</span><svg class="sc-eTNem cptRNl" style="margin-right:-25px" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button><div aria-hidden="true" class="sc-fnphAK hCIaug"><div class="sc-lkDGKT iJzzeh"><div html="&lt;p&gt;Servidor de Desenvolvimento&lt;/p&gt;
+" class="sc-iKOlBD sc-cCzKKD cslxVo jLDXvl"><p>Servidor de Desenvolvimento</p>
+</div><div tabindex="0" role="button"><div class="sc-jnldDk kcaYXC"><span>http://localhost:3000</span>/api/scraping/jobs/{id}</div></div></div><div class="sc-lkDGKT iJzzeh"><div html="&lt;p&gt;Servidor de Produção&lt;/p&gt;
+" class="sc-iKOlBD sc-cCzKKD cslxVo jLDXvl"><p>Servidor de Produção</p>
+</div><div tabindex="0" role="button"><div class="sc-jnldDk kcaYXC"><span>https://api.production.com</span>/api/scraping/jobs/{id}</div></div></div></div></div><div><h3 class="sc-kFCscd kEEgVT"> <!-- -->Response samples<!-- --> </h3><div class="sc-cyZbSl buXd" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="tab-success react-tabs__tab--selected" role="tab" id="tab_R_2ebdq_0" aria-selected="true" aria-disabled="false" aria-controls="panel_R_2ebdq_0" tabindex="0" data-rttab="true">200</li><li class="tab-error" role="tab" id="tab_R_2ebdq_1" aria-selected="false" aria-disabled="false" aria-controls="panel_R_2ebdq_1" data-rttab="true">401</li><li class="tab-error" role="tab" id="tab_R_2ebdq_2" aria-selected="false" aria-disabled="false" aria-controls="panel_R_2ebdq_2" data-rttab="true">404</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel_R_2ebdq_0" aria-labelledby="tab_R_2ebdq_0"><div><div class="sc-cPtzYx fFQIef"><span class="sc-bCvmcK dIZRkC">Content type</span><div class="sc-dQmhJb ctQKNy">application/json</div></div><div class="sc-hVcFhS jTWsvS"><div class="sc-cPtzYx fFQIef"><span class="sc-bCvmcK dIZRkC">Example</span><div class="sc-jIBmdN sc-BCEsg jxoQhL bKZwjg"><svg class="sc-ilxdoe dcIYrC" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="Job Pendente" selected="">Job Pendente</option><option value="Job Processando">Job Processando</option><option value="Job Completo">Job Completo</option></select><label>Job Pendente</label></div></div><div><div class="sc-cSxQHq bDQDNm"><div class="sc-gjLKRm hOxdxq"><button><div class="sc-jdHJyF cUpQkY">Copy</div></button></div><div tabindex="0" class="sc-iKOlBD cslxVo sc-jMbUWf izDcBD"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable "><span class="property token string">"id"</span>: <span class="token string">&quot;123&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"status"</span>: <span class="token string">&quot;pending&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"startedAt"</span>: <span class="token string">&quot;2024-01-20T10:00:00.000Z&quot;</span></div></li></ul><span class="token punctuation">}</span></code></div></div></div></div></div></div></div><div class="react-tabs__tab-panel" role="tabpanel" id="panel_R_2ebdq_1" aria-labelledby="tab_R_2ebdq_1"></div><div class="react-tabs__tab-panel" role="tabpanel" id="panel_R_2ebdq_2" aria-labelledby="tab_R_2ebdq_2"></div></div></div></div></div></div><div id="tag/Job-Status/operation/getStats" data-section-id="tag/Job-Status/operation/getStats" class="sc-eDLJxb kHlVgP"><div data-section-id="operation/getStats" id="operation/getStats" class="sc-iBdmCa kzumiI"><div class="sc-hLQRIK kjDhDB"><h2 class="sc-qZqnL ebZkXj"><a class="sc-csKIKD bedANz" href="#tag/Job-Status/operation/getStats" aria-label="tag/Job-Status/operation/getStats"></a>Obter estatísticas da fila de jobs<!-- --> </h2><div class="sc-iEYWcR fsIxqb"><div html="&lt;p&gt;Retorna estatísticas sobre os jobs na fila.&lt;/p&gt;
+&lt;p&gt;Útil para monitoramento e debugging.&lt;/p&gt;
+&lt;p&gt;🔓 &lt;strong&gt;Este endpoint é público&lt;/strong&gt; - não requer autenticação.&lt;/p&gt;
+" class="sc-iKOlBD sc-cCzKKD cslxVo dqSAMj"><p>Retorna estatísticas sobre os jobs na fila.</p>
+<p>Útil para monitoramento e debugging.</p>
+<p>🔓 <strong>Este endpoint é público</strong> - não requer autenticação.</p>
+</div></div><div><h3 class="sc-fJIGIq dHIUxj">Responses</h3><div><button class="sc-bZTxSr CXagG"><svg class="sc-eTNem bjXKRK" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg><strong class="sc-fYitij hWKODy">200<!-- --> </strong><div html="&lt;p&gt;Estatísticas obtidas com sucesso&lt;/p&gt;
+" class="sc-iKOlBD sc-cCzKKD sc-ckdFjQ cslxVo eTTtlZ hKuZJA"><p>Estatísticas obtidas com sucesso</p>
+</div></button></div></div></div><div class="sc-jTQDnk sc-gLLvbB gzZFRd bTNKSN"><div class="sc-fYrVju fSgsoL"><button class="sc-jYnRlU hxuAbK"><span type="get" class="sc-eGgGXh jByYrY http-verb get">get</span><span class="sc-GkKUH hQgYkC">/api/scraping/stats</span><svg class="sc-eTNem cptRNl" style="margin-right:-25px" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button><div aria-hidden="true" class="sc-fnphAK hCIaug"><div class="sc-lkDGKT iJzzeh"><div html="&lt;p&gt;Servidor de Desenvolvimento&lt;/p&gt;
+" class="sc-iKOlBD sc-cCzKKD cslxVo jLDXvl"><p>Servidor de Desenvolvimento</p>
+</div><div tabindex="0" role="button"><div class="sc-jnldDk kcaYXC"><span>http://localhost:3000</span>/api/scraping/stats</div></div></div><div class="sc-lkDGKT iJzzeh"><div html="&lt;p&gt;Servidor de Produção&lt;/p&gt;
+" class="sc-iKOlBD sc-cCzKKD cslxVo jLDXvl"><p>Servidor de Produção</p>
+</div><div tabindex="0" role="button"><div class="sc-jnldDk kcaYXC"><span>https://api.production.com</span>/api/scraping/stats</div></div></div></div></div><div><h3 class="sc-kFCscd kEEgVT"> <!-- -->Response samples<!-- --> </h3><div class="sc-cyZbSl buXd" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="tab-success react-tabs__tab--selected" role="tab" id="tab_R_2eddq_0" aria-selected="true" aria-disabled="false" aria-controls="panel_R_2eddq_0" tabindex="0" data-rttab="true">200</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel_R_2eddq_0" aria-labelledby="tab_R_2eddq_0"><div><div class="sc-cPtzYx fFQIef"><span class="sc-bCvmcK dIZRkC">Content type</span><div class="sc-dQmhJb ctQKNy">application/json</div></div><div class="sc-hVcFhS jTWsvS"><div class="sc-cSxQHq bDQDNm"><div class="sc-gjLKRm hOxdxq"><button><div class="sc-jdHJyF cUpQkY">Copy</div></button></div><div tabindex="0" class="sc-iKOlBD cslxVo sc-jMbUWf izDcBD"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable "><span class="property token string">"waiting"</span>: <span class="token number">2</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"active"</span>: <span class="token number">1</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"completed"</span>: <span class="token number">45</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"failed"</span>: <span class="token number">3</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"delayed"</span>: <span class="token number">0</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"total"</span>: <span class="token number">51</span></div></li></ul><span class="token punctuation">}</span></code></div></div></div></div></div></div></div></div></div></div></div></div><div class="sc-emwzQg bytLgM"></div></div></div>
+      <script>
+      const __redoc_state = {"menu":{"activeItemIdx":-1},"spec":{"data":{"openapi":"3.0.3","info":{"title":"Emarsys CPF Recommendations API","description":"# 🎯 API de Recomendações de Produtos por CPF\n\nEsta API permite obter recomendações personalizadas de produtos usando **Emarsys Scarab**\nbaseadas no CPF do cliente.\n\n## 📋 Características\n\n- ✅ Recomendações personalizadas por CPF\n- ✅ Múltiplas lógicas de recomendação (PERSONAL, RELATED, POPULAR, etc.)\n- ✅ Filtros por categoria e exclusão de produtos\n- ✅ Sistema de cache inteligente\n- ✅ Jobs assíncronos com rastreamento de status\n- ✅ Reintentos automáticos\n\n## 🚀 Como Usar\n\n1. **Criar Job**: POST `/api/scraping/recommendations/cpf` com seu CPF\n2. **Aguardar**: O job processa em 15-30 segundos\n3. **Consultar**: GET `/api/scraping/jobs/{id}` para obter resultados\n\n## 🔑 Lógicas de Recomendação\n\n| Lógica | Descrição | Caso de Uso |\n|--------|-----------|-------------|\n| **PERSONAL** | Baseado no histórico do usuário | Homepage, emails personalizados |\n| **RELATED** | Produtos relacionados | Página de produto |\n| **ALSO_BOUGHT** | Comprados juntos | Carrinho, checkout |\n| **POPULAR** | Mais vendidos | Homepage, categorias |\n| **CATEGORY** | Mesma categoria | Navegação por categoria |\n| **CART** | Baseado no carrinho | Página de carrinho |\n\n## 📞 Contato & Suporte\n\nPara mais informações, consulte a [documentação completa](https://github.com/seu-repo).\n","version":"1.0.0","contact":{"name":"API Support","email":"support@example.com"},"license":{"name":"MIT","url":"https://opensource.org/licenses/MIT"}},"servers":[{"url":"http://localhost:3000","description":"Servidor de Desenvolvimento"},{"url":"https://api.production.com","description":"Servidor de Produção"}],"tags":[{"name":"CPF Recommendations","description":"Endpoint para obter recomendações de produtos por CPF"},{"name":"Job Status","description":"Endpoints para gerenciar e consultar jobs"}],"paths":{"/api/scraping/recommendations/cpf":{"post":{"tags":["CPF Recommendations"],"summary":"Obter recomendações de produtos por CPF","description":"Cria um job assíncrono para obter recomendações personalizadas de produtos\nusando Emarsys Scarab baseado no CPF do cliente.\n\n### 📝 Como Funciona\n\n1. Você envia uma requisição com o CPF\n2. O sistema cria um job e retorna um ID\n3. O job processa em background (15-30 segundos)\n4. Você consulta o status usando o ID do job\n5. Quando completo, os produtos estão no resultado\n\n### ⚡ Exemplo Rápido\n\n```bash\n# 1. Criar job (com autenticação)\ncurl -X POST http://localhost:3000/api/scraping/recommendations/cpf \\\n  -H \"Content-Type: application/json\" \\\n  -H \"X-API-Key: sua-api-key\" \\\n  -d '{\"cpf\":\"12345678900\",\"recommendLogic\":\"PERSONAL\",\"limit\":10}'\n\n# Resposta: {\"id\":\"123\",\"status\":\"pending\"}\n\n# 2. Consultar resultado (após 15-30s)\ncurl -H \"X-API-Key: sua-api-key\" \\\n  http://localhost:3000/api/scraping/jobs/123\n```\n\n### 🔥 Dicas\n\n- Use `PERSONAL` para recomendações baseadas no histórico\n- Configure `useCache: true` para melhor performance\n- Limite entre 5-20 produtos para melhor UX\n","operationId":"getRecommendationsByCpf","requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/CpfRecommendationRequest"},"examples":{"basic":{"summary":"Requisição Básica","value":{"cpf":"12345678900","recommendLogic":"PERSONAL","limit":10}},"withFilters":{"summary":"Com Filtros de Categoria","value":{"cpf":"123.456.789-00","recommendLogic":"PERSONAL","limit":15,"includeCategories":["Eletrônicos>Smartphones","Informática>Notebooks"]}},"withExclusions":{"summary":"Com Exclusões","value":{"cpf":"12345678900","recommendLogic":"RELATED","limit":10,"excludeItems":["prod-123","prod-456"]}},"popular":{"summary":"Produtos Populares","value":{"cpf":"70653456298","recommendLogic":"POPULAR","limit":20}}}}}},"responses":{"202":{"description":"Job criado com sucesso. O processamento está em andamento.\nUse o `id` retornado para consultar o status.\n","content":{"application/json":{"schema":{"$ref":"#/components/schemas/JobCreated"},"example":{"id":"123","status":"pending","startedAt":"2024-01-20T10:00:00.000Z"}}}},"400":{"description":"Requisição inválida (CPF inválido, parâmetros incorretos)","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Error"},"example":{"statusCode":400,"message":"CPF deve estar em formato 123.456.789-00 ou 12345678900","error":"Bad Request"}}}},"401":{"description":"Não autorizado - API Key inválida ou ausente","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Error"},"examples":{"missing":{"summary":"API Key ausente","value":{"statusCode":401,"message":"API Key is missing","error":"Unauthorized"}},"invalid":{"summary":"API Key inválida","value":{"statusCode":401,"message":"Invalid API Key","error":"Unauthorized"}}}}}},"500":{"description":"Erro interno do servidor","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Error"}}}}}}},"/api/scraping/jobs/{id}":{"get":{"tags":["Job Status"],"summary":"Consultar status de um job","description":"Obtém o status e resultado de um job de recomendações.\n\n### 📊 Status Possíveis\n\n- **pending**: Job criado, aguardando processamento\n- **processing**: Job em execução\n- **completed**: Job concluído com sucesso\n- **failed**: Job falhou (veja campo `error`)\n\n### ⏱️ Tempo de Processamento\n\nNormalmente: 15-30 segundos\n\n### 💡 Polling\n\nConsulte a cada 2-3 segundos até status = \"completed\"\n","operationId":"getJobStatus","parameters":[{"name":"id","in":"path","required":true,"description":"ID do job retornado ao criar a requisição","schema":{"type":"string"},"example":"123"}],"responses":{"200":{"description":"Status do job obtido com sucesso","content":{"application/json":{"schema":{"oneOf":[{"$ref":"#/components/schemas/JobPending"},{"$ref":"#/components/schemas/JobProcessing"},{"$ref":"#/components/schemas/JobCompleted"},{"$ref":"#/components/schemas/JobFailed"}]},"examples":{"pending":{"summary":"Job Pendente","value":{"id":"123","status":"pending","startedAt":"2024-01-20T10:00:00.000Z"}},"processing":{"summary":"Job Processando","value":{"id":"123","status":"processing","startedAt":"2024-01-20T10:00:00.000Z"}},"completed":{"summary":"Job Completo","value":{"id":"123","status":"completed","startedAt":"2024-01-20T10:00:00.000Z","completedAt":"2024-01-20T10:00:15.000Z","result":{"success":true,"products":[{"id":"prod-456","name":"Smartphone Galaxy S23","price":2999.99,"currency":"BRL","category":"Eletrônicos>Smartphones","brand":"Samsung","imageUrl":"https://example.com/image.jpg","url":"https://loja.com/produto/456"}],"totalProducts":10,"scrapedAt":"2024-01-20T10:00:15.000Z","duration":15000}}}}}}},"401":{"description":"Não autorizado - API Key inválida ou ausente","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Error"},"example":{"statusCode":401,"message":"API Key is missing","error":"Unauthorized"}}}},"404":{"description":"Job não encontrado","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Error"},"example":{"statusCode":404,"message":"Job 123 not found"}}}}}}},"/api/scraping/stats":{"get":{"tags":["Job Status"],"summary":"Obter estatísticas da fila de jobs","description":"Retorna estatísticas sobre os jobs na fila.\n\nÚtil para monitoramento e debugging.\n\n🔓 **Este endpoint é público** - não requer autenticação.\n","operationId":"getStats","security":[],"responses":{"200":{"description":"Estatísticas obtidas com sucesso","content":{"application/json":{"schema":{"$ref":"#/components/schemas/QueueStats"},"example":{"waiting":2,"active":1,"completed":45,"failed":3,"delayed":0,"total":51}}}}}}}},"components":{"schemas":{"CpfRecommendationRequest":{"type":"object","required":["cpf"],"properties":{"cpf":{"type":"string","description":"CPF do cliente (com ou sem formatação)\n\n**Formatos aceitos:**\n- `123.456.789-00` (com pontos e hífen)\n- `12345678900` (apenas números)\n","pattern":"^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$|^\\d{11}$","example":"12345678900"},"scarabId":{"type":"string","description":"ID do Scarab (merchant ID do Emarsys)\n\nSe não fornecido, usa o configurado em `.env`\n","example":"1916F613C8B45191"},"recommendLogic":{"type":"string","description":"Lógica de recomendação a ser usada\n\n**Opções disponíveis:**\n- `PERSONAL`: Recomendações personalizadas baseadas no histórico\n- `RELATED`: Produtos relacionados\n- `ALSO_BOUGHT`: Produtos comprados juntos\n- `POPULAR`: Produtos mais populares\n- `CATEGORY`: Produtos da mesma categoria\n- `CART`: Baseado no carrinho atual\n","enum":["PERSONAL","RELATED","ALSO_BOUGHT","POPULAR","CATEGORY","CART"],"default":"PERSONAL","example":"PERSONAL"},"limit":{"type":"integer","description":"Número máximo de produtos a recomendar","minimum":1,"maximum":100,"default":10,"example":10},"includeCategories":{"type":"array","description":"Lista de categorias para incluir nas recomendações\n\n**Formato:** Use `>` para separar níveis\n\n**Exemplo:** `[\"Eletrônicos>Smartphones\", \"Moda>Feminino>Vestidos\"]`\n","items":{"type":"string"},"example":["Eletrônicos>Smartphones","Informática>Notebooks"]},"excludeItems":{"type":"array","description":"IDs de produtos a serem excluídos das recomendações\n\nÚtil para não recomendar produtos já comprados ou visualizados\n","items":{"type":"string"},"example":["prod-123","prod-456"]},"timeout":{"type":"integer","description":"Timeout em milissegundos","minimum":5000,"maximum":300000,"default":30000,"example":30000},"headless":{"type":"boolean","description":"Se deve usar modo headless (sem interface gráfica)","default":true,"example":true},"useCache":{"type":"boolean","description":"Se deve usar cache\n\nResultados são cacheados por 1 hora baseado em: CPF + lógica + limite\n","default":true,"example":true}}},"JobCreated":{"type":"object","properties":{"id":{"type":"string","description":"ID único do job","example":"123"},"status":{"type":"string","enum":["pending"],"example":"pending"},"startedAt":{"type":"string","format":"date-time","example":"2024-01-20T10:00:00.000Z"}}},"JobPending":{"type":"object","properties":{"id":{"type":"string","example":"123"},"status":{"type":"string","enum":["pending"],"example":"pending"},"startedAt":{"type":"string","format":"date-time","example":"2024-01-20T10:00:00.000Z"}}},"JobProcessing":{"type":"object","properties":{"id":{"type":"string","example":"123"},"status":{"type":"string","enum":["processing"],"example":"processing"},"startedAt":{"type":"string","format":"date-time","example":"2024-01-20T10:00:00.000Z"}}},"JobCompleted":{"type":"object","properties":{"id":{"type":"string","example":"123"},"status":{"type":"string","enum":["completed"],"example":"completed"},"startedAt":{"type":"string","format":"date-time","example":"2024-01-20T10:00:00.000Z"},"completedAt":{"type":"string","format":"date-time","example":"2024-01-20T10:00:15.000Z"},"result":{"$ref":"#/components/schemas/ScrapingResult"}}},"JobFailed":{"type":"object","properties":{"id":{"type":"string","example":"123"},"status":{"type":"string","enum":["failed"],"example":"failed"},"startedAt":{"type":"string","format":"date-time","example":"2024-01-20T10:00:00.000Z"},"completedAt":{"type":"string","format":"date-time","example":"2024-01-20T10:00:15.000Z"},"error":{"type":"string","example":"Scarab script not found"}}},"ScrapingResult":{"type":"object","properties":{"success":{"type":"boolean","example":true},"products":{"type":"array","items":{"$ref":"#/components/schemas/Product"}},"totalProducts":{"type":"integer","example":10},"scrapedAt":{"type":"string","format":"date-time","example":"2024-01-20T10:00:15.000Z"},"duration":{"type":"integer","description":"Duração em milissegundos","example":15000},"error":{"type":"string","description":"Mensagem de erro (se houver)"}}},"Product":{"type":"object","properties":{"id":{"type":"string","description":"ID único do produto","example":"prod-456"},"name":{"type":"string","description":"Nome do produto","example":"Smartphone Galaxy S23"},"description":{"type":"string","description":"Descrição do produto","example":"128GB, Preto, 5G"},"price":{"type":"number","description":"Preço do produto","example":2999.99},"currency":{"type":"string","description":"Moeda do preço","example":"BRL"},"imageUrl":{"type":"string","format":"uri","description":"URL da imagem do produto","example":"https://example.com/images/prod-456.jpg"},"url":{"type":"string","format":"uri","description":"URL da página do produto","example":"https://loja.com/produto/456"},"category":{"type":"string","description":"Categoria do produto","example":"Eletrônicos>Smartphones"},"brand":{"type":"string","description":"Marca do produto","example":"Samsung"},"sku":{"type":"string","description":"SKU do produto","example":"SM-S911B"},"inStock":{"type":"boolean","description":"Se está em estoque","example":true},"rating":{"type":"number","description":"Avaliação do produto","minimum":0,"maximum":5,"example":4.5},"reviewCount":{"type":"integer","description":"Número de avaliações","example":1234},"scrapedAt":{"type":"string","format":"date-time","description":"Data/hora do scraping","example":"2024-01-20T10:00:15.000Z"}}},"QueueStats":{"type":"object","properties":{"waiting":{"type":"integer","description":"Jobs aguardando processamento","example":2},"active":{"type":"integer","description":"Jobs sendo processados","example":1},"completed":{"type":"integer","description":"Jobs completados","example":45},"failed":{"type":"integer","description":"Jobs que falharam","example":3},"delayed":{"type":"integer","description":"Jobs atrasados","example":0},"total":{"type":"integer","description":"Total de jobs","example":51}}},"Error":{"type":"object","properties":{"statusCode":{"type":"integer","example":400},"message":{"type":"string","example":"Validation failed"},"error":{"type":"string","example":"Bad Request"}}}},"securitySchemes":{"ApiKeyHeader":{"type":"apiKey","in":"header","name":"X-API-Key","description":"API Key enviada no header `X-API-Key`\n\nExemplo: `X-API-Key: sua-api-key-aqui`\n"},"BearerAuth":{"type":"http","scheme":"bearer","description":"API Key enviada como Bearer token\n\nExemplo: `Authorization: Bearer sua-api-key-aqui`\n"},"ApiKeyQuery":{"type":"apiKey","in":"query","name":"api_key","description":"API Key enviada como query parameter\n\nExemplo: `?api_key=sua-api-key-aqui`\n\n⚠️ Não recomendado para produção\n"}}},"security":[{"ApiKeyHeader":[]},{"BearerAuth":[]},{"ApiKeyQuery":[]}],"x-tagGroups":[{"name":"Recomendações","tags":["CPF Recommendations"]},{"name":"Gerenciamento","tags":["Job Status"]}]}},"searchIndex":{"store":["section/API-de-Recomendacoes-de-Produtos-por-CPF","section/API-de-Recomendacoes-de-Produtos-por-CPF/Caracteristicas","section/API-de-Recomendacoes-de-Produtos-por-CPF/Como-Usar","section/API-de-Recomendacoes-de-Produtos-por-CPF/Logicas-de-Recomendacao","section/API-de-Recomendacoes-de-Produtos-por-CPF/Contato-and-Suporte","tag/CPF-Recommendations","tag/CPF-Recommendations/operation/getRecommendationsByCpf","tag/Job-Status","tag/Job-Status/operation/getJobStatus","tag/Job-Status/operation/getStats"],"index":{"version":"2.3.9","fields":["title","description"],"fieldVectors":[["title/0",[0,0.034,1,1.081,2,0.047,3,0.28,4,0.28,5,0.506,6,0.188]],["description/0",[1,1.995,2,0.057,3,0.516,4,0.516,6,0.347,7,2.682,8,2.682,9,0.708,10,1.542,11,1.995,12,1.995,13,1.995,14,1.995,15,1.995]],["title/1",[0,0.059,16,2.536]],["description/1",[0,0.092,2,0.07,3,0.362,4,0.362,5,0.917,6,0.244,10,1.083,17,1.884,18,1.083,19,1.401,20,1.083,21,1.401,22,1.401,23,1.884,24,1.884,25,1.401,26,0.655,27,1.884,28,1.401,29,1.884,30,1.884,31,0.139,32,1.401,33,0.845,34,1.884,35,0.655,36,1.884,37,1.884]],["title/2",[0,0.053,38,1.678,39,2.256]],["description/2",[6,0.311,9,0.634,31,0.228,33,1.077,40,1.786,41,1.786,42,1.786,43,1.786,44,2.402,45,1.786,46,2.402,47,1.38,48,1.786,49,1.38,50,1.38,51,1.38,52,1.786,53,1.077,54,1.786,55,0.634,56,1.38]],["title/3",[0,0.047,2,0.043,18,1.168,19,1.511]],["description/3",[0,0.096,2,0.057,4,0.427,5,0.517,18,0.855,20,0.855,21,1.106,22,1.106,25,1.977,57,1.487,58,1.487,59,1.487,60,1.652,61,1.106,62,1.487,63,2.221,64,1.487,65,1.487,66,1.487,67,2.221,68,1.487,69,1.487,70,1.487,71,2.658,72,1.487,73,1.106,74,1.487,75,1.487,76,1.487,77,1.487,78,1.487]],["title/4",[0,0.065,79,2.032,80,2.032]],["description/4",[55,0.802,73,2.258,81,3.037,82,2.258,83,3.037,84,3.037]],["title/5",[6,0.328,85,2.536]],["description/5",[2,0.063,3,0.565,4,0.565,5,1.023,6,0.38,9,0.776,55,0.776,86,1.69]],["title/6",[2,0.036,3,0.326,4,0.326,5,0.59,6,0.219,9,0.448]],["description/6",[0,0.085,2,0.021,3,0.312,4,0.395,6,0.21,9,0.263,10,0.572,11,1.206,12,0.74,13,0.74,14,0.74,15,0.74,20,0.572,26,0.346,28,0.74,31,0.192,32,0.74,33,0.728,35,0.346,38,0.74,40,1.206,41,0.74,42,0.74,43,0.74,45,1.206,47,1.499,48,0.74,49,0.572,50,0.932,51,0.572,52,0.74,53,0.447,55,0.625,56,0.932,60,0.74,61,0.74,87,1.622,88,1.18,89,0.995,90,1.622,91,0.995,92,0.995,93,0.995,94,0.74,95,1.622,96,0.995,97,0.995,98,0.995,99,0.995,100,0.995,101,0.995,102,0.74,103,0.995,104,0.995,105,0.995,106,0.995,107,0.74,108,1.622,109,0.995,110,0.995,111,2.054,112,0.995,113,0.995,114,1.622,115,1.622,116,0.995,117,0.995,118,0.995,119,0.995,120,0.995,121,0.995,122,0.995,123,0.995,124,0.995,125,0.995,126,0.995,127,1.622,128,0.995,129,0.995,130,0.995,131,0.995,132,0.995]],["title/7",[31,0.187,35,0.882]],["description/7",[26,1.057,31,0.223,53,1.362,55,0.802,86,1.746,133,3.037]],["title/8",[2,0.039,31,0.136,35,0.643,53,0.829,88,1.062]],["description/8",[0,0.089,2,0.06,3,0.317,26,0.573,31,0.242,33,0.739,35,0.982,47,0.947,49,0.947,50,0.947,51,1.376,54,1.225,56,0.947,82,1.225,88,0.947,134,1.647,135,1.647,136,1.647,137,1.647,138,1.647,139,2.395,140,1.647,141,1.647,142,2.395,143,1.647,144,1.647,145,1.647,146,1.647,147,1.647,148,1.647,149,1.647,150,1.647,151,1.647,152,1.647,153,1.647,154,1.647]],["title/9",[2,0.036,9,0.448,31,0.125,155,1.261,156,1.695,157,1.261]],["description/9",[0,0.08,26,0.835,31,0.177,55,0.634,86,1.38,94,1.786,102,1.786,107,1.786,155,1.786,157,1.786,158,2.402,159,2.402,160,2.402,161,2.402,162,2.402,163,2.402,164,2.402,165,2.402,166,2.402,167,2.402]]],"invertedIndex":[["",{"_index":0,"title":{"0":{},"1":{},"2":{},"3":{},"4":{}},"description":{"1":{},"3":{},"6":{},"8":{},"9":{}}}],["1",{"_index":40,"title":{},"description":{"2":{},"6":{}}}],["15-30",{"_index":50,"title":{},"description":{"2":{},"6":{},"8":{}}}],["2",{"_index":45,"title":{},"description":{"2":{},"6":{}}}],["2-3",{"_index":154,"title":{},"description":{"8":{}}}],["3",{"_index":52,"title":{},"description":{"2":{},"6":{}}}],["4",{"_index":97,"title":{},"description":{"6":{}}}],["5",{"_index":99,"title":{},"description":{"6":{}}}],["5-20",{"_index":131,"title":{},"description":{"6":{}}}],["aguardando",{"_index":138,"title":{},"description":{"8":{}}}],["aguardar",{"_index":46,"title":{},"description":{"2":{}}}],["also_bought",{"_index":68,"title":{},"description":{"3":{}}}],["api",{"_index":1,"title":{"0":{}},"description":{"0":{}}}],["api/scraping/jobs/{id",{"_index":54,"title":{},"description":{"2":{},"8":{}}}],["api/scraping/recommendations/cpf",{"_index":43,"title":{},"description":{"2":{},"6":{}}}],["api/scraping/stat",{"_index":167,"title":{},"description":{"9":{}}}],["application/json",{"_index":113,"title":{},"description":{"6":{}}}],["apó",{"_index":120,"title":{},"description":{"6":{}}}],["assíncrono",{"_index":32,"title":{},"description":{"1":{},"6":{}}}],["autenticação",{"_index":107,"title":{},"description":{"6":{},"9":{}}}],["automático",{"_index":37,"title":{},"description":{"1":{}}}],["background",{"_index":96,"title":{},"description":{"6":{}}}],["baseada",{"_index":14,"title":{},"description":{"0":{},"6":{}}}],["baseado",{"_index":60,"title":{},"description":{"3":{},"6":{}}}],["bash",{"_index":106,"title":{},"description":{"6":{}}}],["cach",{"_index":29,"title":{},"description":{"1":{}}}],["cada",{"_index":153,"title":{},"description":{"8":{}}}],["campo",{"_index":148,"title":{},"description":{"8":{}}}],["característica",{"_index":16,"title":{"1":{}},"description":{}}],["carrinho",{"_index":71,"title":{},"description":{"3":{}}}],["cart",{"_index":78,"title":{},"description":{"3":{}}}],["caso",{"_index":58,"title":{},"description":{"3":{}}}],["categori",{"_index":75,"title":{},"description":{"3":{}}}],["categoria",{"_index":25,"title":{},"description":{"1":{},"3":{}}}],["checkout",{"_index":72,"title":{},"description":{"3":{}}}],["client",{"_index":15,"title":{},"description":{"0":{},"6":{}}}],["com",{"_index":33,"title":{},"description":{"1":{},"2":{},"6":{},"8":{}}}],["como",{"_index":38,"title":{"2":{}},"description":{"6":{}}}],["complet",{"_index":142,"title":{},"description":{"8":{}}}],["completa](https://github.com/seu-repo",{"_index":84,"title":{},"description":{"4":{}}}],["completo",{"_index":101,"title":{},"description":{"6":{}}}],["comprado",{"_index":69,"title":{},"description":{"3":{}}}],["concluído",{"_index":143,"title":{},"description":{"8":{}}}],["configur",{"_index":124,"title":{},"description":{"6":{}}}],["consult",{"_index":82,"title":{},"description":{"4":{},"8":{}}}],["consulta",{"_index":98,"title":{},"description":{"6":{}}}],["consultar",{"_index":53,"title":{"8":{}},"description":{"2":{},"6":{},"7":{}}}],["contato",{"_index":79,"title":{"4":{}},"description":{}}],["content-typ",{"_index":112,"title":{},"description":{"6":{}}}],["cpf",{"_index":6,"title":{"0":{},"5":{},"6":{}},"description":{"0":{},"1":{},"2":{},"5":{},"6":{}}}],["cpf\":\"12345678900\",\"recommendlogic\":\"personal\",\"limit\":10",{"_index":117,"title":{},"description":{"6":{}}}],["cria",{"_index":87,"title":{},"description":{"6":{}}}],["criado",{"_index":137,"title":{},"description":{"8":{}}}],["criar",{"_index":41,"title":{},"description":{"2":{},"6":{}}}],["curl",{"_index":108,"title":{},"description":{"6":{}}}],["d",{"_index":116,"title":{},"description":{"6":{}}}],["da",{"_index":156,"title":{"9":{}},"description":{}}],["de",{"_index":2,"title":{"0":{},"3":{},"6":{},"8":{},"9":{}},"description":{"0":{},"1":{},"3":{},"5":{},"6":{},"8":{}}}],["debug",{"_index":162,"title":{},"description":{"9":{}}}],["descrição",{"_index":57,"title":{},"description":{"3":{}}}],["dica",{"_index":122,"title":{},"description":{"6":{}}}],["documentação",{"_index":83,"title":{},"description":{"4":{}}}],["e",{"_index":26,"title":{},"description":{"1":{},"6":{},"7":{},"8":{},"9":{}}}],["em",{"_index":49,"title":{},"description":{"2":{},"6":{},"8":{}}}],["email",{"_index":64,"title":{},"description":{"3":{}}}],["emarsi",{"_index":12,"title":{},"description":{"0":{},"6":{}}}],["endpoint",{"_index":86,"title":{},"description":{"5":{},"7":{},"9":{}}}],["entr",{"_index":130,"title":{},"description":{"6":{}}}],["envia",{"_index":91,"title":{},"description":{"6":{}}}],["error",{"_index":149,"title":{},"description":{"8":{}}}],["est",{"_index":163,"title":{},"description":{"9":{}}}],["esta",{"_index":7,"title":{},"description":{"0":{}}}],["estatística",{"_index":155,"title":{"9":{}},"description":{"9":{}}}],["estão",{"_index":103,"title":{},"description":{"6":{}}}],["etc",{"_index":23,"title":{},"description":{"1":{}}}],["exclusão",{"_index":27,"title":{},"description":{"1":{}}}],["execução",{"_index":141,"title":{},"description":{"8":{}}}],["exemplo",{"_index":104,"title":{},"description":{"6":{}}}],["fail",{"_index":145,"title":{},"description":{"8":{}}}],["falhou",{"_index":146,"title":{},"description":{"8":{}}}],["fila",{"_index":157,"title":{"9":{}},"description":{"9":{}}}],["filtro",{"_index":24,"title":{},"description":{"1":{}}}],["funciona",{"_index":89,"title":{},"description":{"6":{}}}],["gerenciar",{"_index":133,"title":{},"description":{"7":{}}}],["h",{"_index":111,"title":{},"description":{"6":{}}}],["histórico",{"_index":61,"title":{},"description":{"3":{},"6":{}}}],["homepag",{"_index":63,"title":{},"description":{"3":{}}}],["http://localhost:3000/api/scraping/jobs/123",{"_index":121,"title":{},"description":{"6":{}}}],["http://localhost:3000/api/scraping/recommendations/cpf",{"_index":110,"title":{},"description":{"6":{}}}],["id",{"_index":95,"title":{},"description":{"6":{}}}],["id\":\"123\",\"status\":\"pend",{"_index":119,"title":{},"description":{"6":{}}}],["informaçõ",{"_index":81,"title":{},"description":{"4":{}}}],["inteligent",{"_index":30,"title":{},"description":{"1":{}}}],["job",{"_index":31,"title":{"7":{},"8":{},"9":{}},"description":{"1":{},"2":{},"6":{},"7":{},"8":{},"9":{}}}],["junto",{"_index":70,"title":{},"description":{"3":{}}}],["limit",{"_index":129,"title":{},"description":{"6":{}}}],["lógica",{"_index":18,"title":{"3":{}},"description":{"1":{},"3":{}}}],["mai",{"_index":73,"title":{},"description":{"3":{},"4":{}}}],["melhor",{"_index":127,"title":{},"description":{"6":{}}}],["mesma",{"_index":76,"title":{},"description":{"3":{}}}],["monitoramento",{"_index":161,"title":{},"description":{"9":{}}}],["múltipla",{"_index":17,"title":{},"description":{"1":{}}}],["na",{"_index":159,"title":{},"description":{"9":{}}}],["navegação",{"_index":77,"title":{},"description":{"3":{}}}],["normalment",{"_index":151,"title":{},"description":{"8":{}}}],["não",{"_index":165,"title":{},"description":{"9":{}}}],["o",{"_index":47,"title":{},"description":{"2":{},"6":{},"8":{}}}],["obter",{"_index":9,"title":{"6":{},"9":{}},"description":{"0":{},"2":{},"5":{},"6":{}}}],["obtém",{"_index":134,"title":{},"description":{"8":{}}}],["os",{"_index":102,"title":{},"description":{"6":{},"9":{}}}],["para",{"_index":55,"title":{},"description":{"2":{},"4":{},"5":{},"6":{},"7":{},"9":{}}}],["pend",{"_index":136,"title":{},"description":{"8":{}}}],["perform",{"_index":128,"title":{},"description":{"6":{}}}],["permit",{"_index":8,"title":{},"description":{"0":{}}}],["person",{"_index":20,"title":{},"description":{"1":{},"3":{},"6":{}}}],["personalizada",{"_index":10,"title":{},"description":{"0":{},"1":{},"6":{}}}],["personalizado",{"_index":65,"title":{},"description":{"3":{}}}],["poll",{"_index":152,"title":{},"description":{"8":{}}}],["popular",{"_index":22,"title":{},"description":{"1":{},"3":{}}}],["por",{"_index":5,"title":{"0":{},"6":{}},"description":{"1":{},"3":{},"5":{}}}],["possívei",{"_index":135,"title":{},"description":{"8":{}}}],["post",{"_index":42,"title":{},"description":{"2":{},"6":{}}}],["process",{"_index":140,"title":{},"description":{"8":{}}}],["processa",{"_index":48,"title":{},"description":{"2":{},"6":{}}}],["processamento",{"_index":139,"title":{},"description":{"8":{}}}],["produto",{"_index":4,"title":{"0":{},"6":{}},"description":{"0":{},"1":{},"3":{},"5":{},"6":{}}}],["página",{"_index":67,"title":{},"description":{"3":{}}}],["público",{"_index":164,"title":{},"description":{"9":{}}}],["quando",{"_index":100,"title":{},"description":{"6":{}}}],["rastreamento",{"_index":34,"title":{},"description":{"1":{}}}],["recomendação",{"_index":19,"title":{"3":{}},"description":{"1":{}}}],["recomendaçõ",{"_index":3,"title":{"0":{},"6":{}},"description":{"0":{},"1":{},"5":{},"6":{},"8":{}}}],["recommend",{"_index":85,"title":{"5":{}},"description":{}}],["reintento",{"_index":36,"title":{},"description":{"1":{}}}],["relacionado",{"_index":66,"title":{},"description":{"3":{}}}],["relat",{"_index":21,"title":{},"description":{"1":{},"3":{}}}],["requer",{"_index":166,"title":{},"description":{"9":{}}}],["requisição",{"_index":93,"title":{},"description":{"6":{}}}],["resposta",{"_index":118,"title":{},"description":{"6":{}}}],["resultado",{"_index":56,"title":{},"description":{"2":{},"6":{},"8":{}}}],["retorna",{"_index":94,"title":{},"description":{"6":{},"9":{}}}],["rápido",{"_index":105,"title":{},"description":{"6":{}}}],["scarab",{"_index":13,"title":{},"description":{"0":{},"6":{}}}],["segundo",{"_index":51,"title":{},"description":{"2":{},"6":{},"8":{}}}],["seu",{"_index":44,"title":{},"description":{"2":{}}}],["sistema",{"_index":28,"title":{},"description":{"1":{},"6":{}}}],["sobr",{"_index":158,"title":{},"description":{"9":{}}}],["statu",{"_index":35,"title":{"7":{},"8":{}},"description":{"1":{},"6":{},"8":{}}}],["sua-api-key",{"_index":115,"title":{},"description":{"6":{}}}],["sucesso",{"_index":144,"title":{},"description":{"8":{}}}],["suport",{"_index":80,"title":{"4":{}},"description":{}}],["tempo",{"_index":150,"title":{},"description":{"8":{}}}],["til",{"_index":160,"title":{},"description":{"9":{}}}],["true",{"_index":126,"title":{},"description":{"6":{}}}],["um",{"_index":88,"title":{"8":{}},"description":{"6":{},"8":{}}}],["uma",{"_index":92,"title":{},"description":{"6":{}}}],["us",{"_index":123,"title":{},"description":{"6":{}}}],["usando",{"_index":11,"title":{},"description":{"0":{},"6":{}}}],["usar",{"_index":39,"title":{"2":{}},"description":{}}],["usecach",{"_index":125,"title":{},"description":{"6":{}}}],["uso",{"_index":59,"title":{},"description":{"3":{}}}],["usuário",{"_index":62,"title":{},"description":{"3":{}}}],["ux",{"_index":132,"title":{},"description":{"6":{}}}],["veja",{"_index":147,"title":{},"description":{"8":{}}}],["vendido",{"_index":74,"title":{},"description":{"3":{}}}],["voc",{"_index":90,"title":{},"description":{"6":{}}}],["x",{"_index":109,"title":{},"description":{"6":{}}}],["x-api-key",{"_index":114,"title":{},"description":{"6":{}}}]],"pipeline":[]}},"options":{"theme":{"colors":{"primary":{"main":"#32329f"},"success":{"main":"#00aa13"}},"typography":{"fontSize":"16px","fontFamily":"\"Inter\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif","headings":{"fontFamily":"\"Inter\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif"}},"sidebar":{"backgroundColor":"#fafafa","textColor":"#333333","activeTextColor":"#32329f"},"rightPanel":{"backgroundColor":"#263238"}}}};
+
+      var container = document.getElementById('redoc');
+      Redoc.hydrate(__redoc_state, container);
+
+      </script>
+</body>
+
+</html>

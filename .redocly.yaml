@@ -1,0 +1,31 @@
+apis:
+  cpf-recommendations@v1:
+    root: docs/openapi-cpf.yaml
+    rules:
+      no-unused-components: warn
+      operation-summary: warn
+      operation-description: warn
+      tag-description: warn
+      security-defined: off
+      no-server-example.com: off
+      operation-4xx-response: off
+
+theme:
+  openapi:
+    theme:
+      colors:
+        primary:
+          main: '#32329f'
+        success:
+          main: '#00aa13'
+      typography:
+        fontSize: '16px'
+        fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+        headings:
+          fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+      sidebar:
+        backgroundColor: '#fafafa'
+        textColor: '#333333'
+        activeTextColor: '#32329f'
+      rightPanel:
+        backgroundColor: '#263238'

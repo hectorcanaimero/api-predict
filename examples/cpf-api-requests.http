@@ -1,0 +1,157 @@
+### Variables
+@baseUrl = http://localhost:3000
+@jobId = 1
+@cpf = 123.456.789-00
+@scarabId = 1916F613C8B45191
+
+###
+### Obtener recomendaciones por CPF (básico)
+POST {{baseUrl}}/api/scraping/recommendations/cpf
+Content-Type: application/json
+
+{
+  "cpf": "{{cpf}}",
+  "scarabId": "{{scarabId}}",
+  "recommendLogic": "PERSONAL",
+  "limit": 10,
+  "headless": true,
+  "useCache": true
+}
+
+###
+### Recomendaciones con filtro de categoría
+POST {{baseUrl}}/api/scraping/recommendations/cpf
+Content-Type: application/json
+
+{
+  "cpf": "{{cpf}}",
+  "scarabId": "{{scarabId}}",
+  "recommendLogic": "PERSONAL",
+  "limit": 5,
+  "includeCategories": ["WOMEN>Coats & Jackets", "WOMEN>Dresses"],
+  "headless": true
+}
+
+###
+### Recomendaciones excluyendo productos específicos
+POST {{baseUrl}}/api/scraping/recommendations/cpf
+Content-Type: application/json
+
+{
+  "cpf": "{{cpf}}",
+  "scarabId": "{{scarabId}}",
+  "recommendLogic": "PERSONAL",
+  "limit": 10,
+  "excludeItems": ["2540", "2538", "1234"],
+  "headless": true
+}
+
+###
+### Recomendaciones con autenticación
+POST {{baseUrl}}/api/scraping/recommendations/cpf
+Content-Type: application/json
+
+{
+  "cpf": "{{cpf}}",
+  "url": "https://extend.emarsys.com",
+  "username": "usuario@example.com",
+  "password": "password123",
+  "scarabId": "{{scarabId}}",
+  "recommendLogic": "PERSONAL",
+  "limit": 10,
+  "headless": true
+}
+
+###
+### Productos relacionados (RELATED)
+POST {{baseUrl}}/api/scraping/recommendations/cpf
+Content-Type: application/json
+
+{
+  "cpf": "{{cpf}}",
+  "scarabId": "{{scarabId}}",
+  "recommendLogic": "RELATED",
+  "limit": 10,
+  "headless": true
+}
+
+###
+### Productos más comprados juntos (ALSO_BOUGHT)
+POST {{baseUrl}}/api/scraping/recommendations/cpf
+Content-Type: application/json
+
+{
+  "cpf": "{{cpf}}",
+  "scarabId": "{{scarabId}}",
+  "recommendLogic": "ALSO_BOUGHT",
+  "limit": 5,
+  "headless": true
+}
+
+###
+### Productos populares (POPULAR)
+POST {{baseUrl}}/api/scraping/recommendations/cpf
+Content-Type: application/json
+
+{
+  "cpf": "{{cpf}}",
+  "scarabId": "{{scarabId}}",
+  "recommendLogic": "POPULAR",
+  "limit": 10,
+  "headless": true
+}
+
+###
+### Recomendaciones basadas en carrito (CART)
+POST {{baseUrl}}/api/scraping/recommendations/cpf
+Content-Type: application/json
+
+{
+  "cpf": "{{cpf}}",
+  "scarabId": "{{scarabId}}",
+  "recommendLogic": "CART",
+  "limit": 5,
+  "headless": true
+}
+
+###
+### Recomendaciones con múltiples filtros
+POST {{baseUrl}}/api/scraping/recommendations/cpf
+Content-Type: application/json
+
+{
+  "cpf": "{{cpf}}",
+  "scarabId": "{{scarabId}}",
+  "recommendLogic": "PERSONAL",
+  "limit": 20,
+  "includeCategories": ["WOMEN>Coats & Jackets"],
+  "excludeItems": ["2540"],
+  "timeout": 45000,
+  "headless": true,
+  "useCache": false
+}
+
+###
+### CPF sin formato (solo números)
+POST {{baseUrl}}/api/scraping/recommendations/cpf
+Content-Type: application/json
+
+{
+  "cpf": "12345678900",
+  "scarabId": "{{scarabId}}",
+  "recommendLogic": "PERSONAL",
+  "limit": 10,
+  "headless": true
+}
+
+###
+### Verificar estado del job
+GET {{baseUrl}}/api/scraping/jobs/{{jobId}}
+
+###
+### Listar todos los jobs
+GET {{baseUrl}}/api/scraping/jobs
+
+###
+### Estadísticas
+GET {{baseUrl}}/api/scraping/stats

@@ -1,0 +1,667 @@
+openapi: 3.0.3
+info:
+  title: Emarsys CPF Recommendations API
+  description: |
+    # 🎯 API de Recomendações de Produtos por CPF
+
+    Esta API permite obter recomendações personalizadas de produtos usando **Emarsys Scarab**
+    baseadas no CPF do cliente.
+
+    ## 📋 Características
+
+    - ✅ Recomendações personalizadas por CPF
+    - ✅ Múltiplas lógicas de recomendação (PERSONAL, RELATED, POPULAR, etc.)
+    - ✅ Filtros por categoria e exclusão de produtos
+    - ✅ Sistema de cache inteligente
+    - ✅ Jobs assíncronos com rastreamento de status
+    - ✅ Reintentos automáticos
+
+    ## 🚀 Como Usar
+
+    1. **Criar Job**: POST `/api/scraping/recommendations/cpf` com seu CPF
+    2. **Aguardar**: O job processa em 15-30 segundos
+    3. **Consultar**: GET `/api/scraping/jobs/{id}` para obter resultados
+
+    ## 🔑 Lógicas de Recomendação
+
+    | Lógica | Descrição | Caso de Uso |
+    |--------|-----------|-------------|
+    | **PERSONAL** | Baseado no histórico do usuário | Homepage, emails personalizados |
+    | **RELATED** | Produtos relacionados | Página de produto |
+    | **ALSO_BOUGHT** | Comprados juntos | Carrinho, checkout |
+    | **POPULAR** | Mais vendidos | Homepage, categorias |
+    | **CATEGORY** | Mesma categoria | Navegação por categoria |
+    | **CART** | Baseado no carrinho | Página de carrinho |
+
+    ## 📞 Contato & Suporte
+
+    Para mais informações, consulte a [documentação completa](https://github.com/seu-repo).
+
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: support@example.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:3000
+    description: Servidor de Desenvolvimento
+  - url: https://api.production.com
+    description: Servidor de Produção
+
+tags:
+  - name: CPF Recommendations
+    description: Endpoint para obter recomendações de produtos por CPF
+  - name: Job Status
+    description: Endpoints para gerenciar e consultar jobs
+
+paths:
+  /api/scraping/recommendations/cpf:
+    post:
+      tags:
+        - CPF Recommendations
+      summary: Obter recomendações de produtos por CPF
+      description: |
+        Cria um job assíncrono para obter recomendações personalizadas de produtos
+        usando Emarsys Scarab baseado no CPF do cliente.
+
+        ### 📝 Como Funciona
+
+        1. Você envia uma requisição com o CPF
+        2. O sistema cria um job e retorna um ID
+        3. O job processa em background (15-30 segundos)
+        4. Você consulta o status usando o ID do job
+        5. Quando completo, os produtos estão no resultado
+
+        ### ⚡ Exemplo Rápido
+
+        ```bash
+        # 1. Criar job (com autenticação)
+        curl -X POST http://localhost:3000/api/scraping/recommendations/cpf \
+          -H "Content-Type: application/json" \
+          -H "X-API-Key: sua-api-key" \
+          -d '{"cpf":"12345678900","recommendLogic":"PERSONAL","limit":10}'
+
+        # Resposta: {"id":"123","status":"pending"}
+
+        # 2. Consultar resultado (após 15-30s)
+        curl -H "X-API-Key: sua-api-key" \
+          http://localhost:3000/api/scraping/jobs/123
+        ```
+
+        ### 🔥 Dicas
+
+        - Use `PERSONAL` para recomendações baseadas no histórico
+        - Configure `useCache: true` para melhor performance
+        - Limite entre 5-20 produtos para melhor UX
+
+      operationId: getRecommendationsByCpf
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CpfRecommendationRequest'
+            examples:
+              basic:
+                summary: Requisição Básica
+                value:
+                  cpf: "12345678900"
+                  recommendLogic: "PERSONAL"
+                  limit: 10
+              withFilters:
+                summary: Com Filtros de Categoria
+                value:
+                  cpf: "123.456.789-00"
+                  recommendLogic: "PERSONAL"
+                  limit: 15
+                  includeCategories:
+                    - "Eletrônicos>Smartphones"
+                    - "Informática>Notebooks"
+              withExclusions:
+                summary: Com Exclusões
+                value:
+                  cpf: "12345678900"
+                  recommendLogic: "RELATED"
+                  limit: 10
+                  excludeItems:
+                    - "prod-123"
+                    - "prod-456"
+              popular:
+                summary: Produtos Populares
+                value:
+                  cpf: "70653456298"
+                  recommendLogic: "POPULAR"
+                  limit: 20
+      responses:
+        '202':
+          description: |
+            Job criado com sucesso. O processamento está em andamento.
+            Use o `id` retornado para consultar o status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobCreated'
+              example:
+                id: "123"
+                status: "pending"
+                startedAt: "2024-01-20T10:00:00.000Z"
+        '400':
+          description: Requisição inválida (CPF inválido, parâmetros incorretos)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                statusCode: 400
+                message: "CPF deve estar em formato 123.456.789-00 ou 12345678900"
+                error: "Bad Request"
+        '401':
+          description: Não autorizado - API Key inválida ou ausente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                missing:
+                  summary: API Key ausente
+                  value:
+                    statusCode: 401
+                    message: "API Key is missing"
+                    error: "Unauthorized"
+                invalid:
+                  summary: API Key inválida
+                  value:
+                    statusCode: 401
+                    message: "Invalid API Key"
+                    error: "Unauthorized"
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/scraping/jobs/{id}:
+    get:
+      tags:
+        - Job Status
+      summary: Consultar status de um job
+      description: |
+        Obtém o status e resultado de um job de recomendações.
+
+        ### 📊 Status Possíveis
+
+        - **pending**: Job criado, aguardando processamento
+        - **processing**: Job em execução
+        - **completed**: Job concluído com sucesso
+        - **failed**: Job falhou (veja campo `error`)
+
+        ### ⏱️ Tempo de Processamento
+
+        Normalmente: 15-30 segundos
+
+        ### 💡 Polling
+
+        Consulte a cada 2-3 segundos até status = "completed"
+
+      operationId: getJobStatus
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do job retornado ao criar a requisição
+          schema:
+            type: string
+          example: "123"
+      responses:
+        '200':
+          description: Status do job obtido com sucesso
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/JobPending'
+                  - $ref: '#/components/schemas/JobProcessing'
+                  - $ref: '#/components/schemas/JobCompleted'
+                  - $ref: '#/components/schemas/JobFailed'
+              examples:
+                pending:
+                  summary: Job Pendente
+                  value:
+                    id: "123"
+                    status: "pending"
+                    startedAt: "2024-01-20T10:00:00.000Z"
+                processing:
+                  summary: Job Processando
+                  value:
+                    id: "123"
+                    status: "processing"
+                    startedAt: "2024-01-20T10:00:00.000Z"
+                completed:
+                  summary: Job Completo
+                  value:
+                    id: "123"
+                    status: "completed"
+                    startedAt: "2024-01-20T10:00:00.000Z"
+                    completedAt: "2024-01-20T10:00:15.000Z"
+                    result:
+                      success: true
+                      products:
+                        - id: "prod-456"
+                          name: "Smartphone Galaxy S23"
+                          price: 2999.99
+                          currency: "BRL"
+                          category: "Eletrônicos>Smartphones"
+                          brand: "Samsung"
+                          imageUrl: "https://example.com/image.jpg"
+                          url: "https://loja.com/produto/456"
+                      totalProducts: 10
+                      scrapedAt: "2024-01-20T10:00:15.000Z"
+                      duration: 15000
+        '401':
+          description: Não autorizado - API Key inválida ou ausente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                statusCode: 401
+                message: "API Key is missing"
+                error: "Unauthorized"
+        '404':
+          description: Job não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                statusCode: 404
+                message: "Job 123 not found"
+
+  /api/scraping/stats:
+    get:
+      tags:
+        - Job Status
+      summary: Obter estatísticas da fila de jobs
+      description: |
+        Retorna estatísticas sobre os jobs na fila.
+
+        Útil para monitoramento e debugging.
+
+        🔓 **Este endpoint é público** - não requer autenticação.
+      operationId: getStats
+      security: []
+      responses:
+        '200':
+          description: Estatísticas obtidas com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueueStats'
+              example:
+                waiting: 2
+                active: 1
+                completed: 45
+                failed: 3
+                delayed: 0
+                total: 51
+
+components:
+  schemas:
+    CpfRecommendationRequest:
+      type: object
+      required:
+        - cpf
+      properties:
+        cpf:
+          type: string
+          description: |
+            CPF do cliente (com ou sem formatação)
+
+            **Formatos aceitos:**
+            - `123.456.789-00` (com pontos e hífen)
+            - `12345678900` (apenas números)
+          pattern: '^\d{3}\.\d{3}\.\d{3}-\d{2}$|^\d{11}$'
+          example: "12345678900"
+        scarabId:
+          type: string
+          description: |
+            ID do Scarab (merchant ID do Emarsys)
+
+            Se não fornecido, usa o configurado em `.env`
+          example: "1916F613C8B45191"
+        recommendLogic:
+          type: string
+          description: |
+            Lógica de recomendação a ser usada
+
+            **Opções disponíveis:**
+            - `PERSONAL`: Recomendações personalizadas baseadas no histórico
+            - `RELATED`: Produtos relacionados
+            - `ALSO_BOUGHT`: Produtos comprados juntos
+            - `POPULAR`: Produtos mais populares
+            - `CATEGORY`: Produtos da mesma categoria
+            - `CART`: Baseado no carrinho atual
+          enum:
+            - PERSONAL
+            - RELATED
+            - ALSO_BOUGHT
+            - POPULAR
+            - CATEGORY
+            - CART
+          default: "PERSONAL"
+          example: "PERSONAL"
+        limit:
+          type: integer
+          description: Número máximo de produtos a recomendar
+          minimum: 1
+          maximum: 100
+          default: 10
+          example: 10
+        includeCategories:
+          type: array
+          description: |
+            Lista de categorias para incluir nas recomendações
+
+            **Formato:** Use `>` para separar níveis
+
+            **Exemplo:** `["Eletrônicos>Smartphones", "Moda>Feminino>Vestidos"]`
+          items:
+            type: string
+          example:
+            - "Eletrônicos>Smartphones"
+            - "Informática>Notebooks"
+        excludeItems:
+          type: array
+          description: |
+            IDs de produtos a serem excluídos das recomendações
+
+            Útil para não recomendar produtos já comprados ou visualizados
+          items:
+            type: string
+          example:
+            - "prod-123"
+            - "prod-456"
+        timeout:
+          type: integer
+          description: Timeout em milissegundos
+          minimum: 5000
+          maximum: 300000
+          default: 30000
+          example: 30000
+        headless:
+          type: boolean
+          description: Se deve usar modo headless (sem interface gráfica)
+          default: true
+          example: true
+        useCache:
+          type: boolean
+          description: |
+            Se deve usar cache
+
+            Resultados são cacheados por 1 hora baseado em: CPF + lógica + limite
+          default: true
+          example: true
+
+    JobCreated:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID único do job
+          example: "123"
+        status:
+          type: string
+          enum: [pending]
+          example: "pending"
+        startedAt:
+          type: string
+          format: date-time
+          example: "2024-01-20T10:00:00.000Z"
+
+    JobPending:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "123"
+        status:
+          type: string
+          enum: [pending]
+          example: "pending"
+        startedAt:
+          type: string
+          format: date-time
+          example: "2024-01-20T10:00:00.000Z"
+
+    JobProcessing:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "123"
+        status:
+          type: string
+          enum: [processing]
+          example: "processing"
+        startedAt:
+          type: string
+          format: date-time
+          example: "2024-01-20T10:00:00.000Z"
+
+    JobCompleted:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "123"
+        status:
+          type: string
+          enum: [completed]
+          example: "completed"
+        startedAt:
+          type: string
+          format: date-time
+          example: "2024-01-20T10:00:00.000Z"
+        completedAt:
+          type: string
+          format: date-time
+          example: "2024-01-20T10:00:15.000Z"
+        result:
+          $ref: '#/components/schemas/ScrapingResult'
+
+    JobFailed:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "123"
+        status:
+          type: string
+          enum: [failed]
+          example: "failed"
+        startedAt:
+          type: string
+          format: date-time
+          example: "2024-01-20T10:00:00.000Z"
+        completedAt:
+          type: string
+          format: date-time
+          example: "2024-01-20T10:00:15.000Z"
+        error:
+          type: string
+          example: "Scarab script not found"
+
+    ScrapingResult:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+        totalProducts:
+          type: integer
+          example: 10
+        scrapedAt:
+          type: string
+          format: date-time
+          example: "2024-01-20T10:00:15.000Z"
+        duration:
+          type: integer
+          description: Duração em milissegundos
+          example: 15000
+        error:
+          type: string
+          description: Mensagem de erro (se houver)
+
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID único do produto
+          example: "prod-456"
+        name:
+          type: string
+          description: Nome do produto
+          example: "Smartphone Galaxy S23"
+        description:
+          type: string
+          description: Descrição do produto
+          example: "128GB, Preto, 5G"
+        price:
+          type: number
+          description: Preço do produto
+          example: 2999.99
+        currency:
+          type: string
+          description: Moeda do preço
+          example: "BRL"
+        imageUrl:
+          type: string
+          format: uri
+          description: URL da imagem do produto
+          example: "https://example.com/images/prod-456.jpg"
+        url:
+          type: string
+          format: uri
+          description: URL da página do produto
+          example: "https://loja.com/produto/456"
+        category:
+          type: string
+          description: Categoria do produto
+          example: "Eletrônicos>Smartphones"
+        brand:
+          type: string
+          description: Marca do produto
+          example: "Samsung"
+        sku:
+          type: string
+          description: SKU do produto
+          example: "SM-S911B"
+        inStock:
+          type: boolean
+          description: Se está em estoque
+          example: true
+        rating:
+          type: number
+          description: Avaliação do produto
+          minimum: 0
+          maximum: 5
+          example: 4.5
+        reviewCount:
+          type: integer
+          description: Número de avaliações
+          example: 1234
+        scrapedAt:
+          type: string
+          format: date-time
+          description: Data/hora do scraping
+          example: "2024-01-20T10:00:15.000Z"
+
+    QueueStats:
+      type: object
+      properties:
+        waiting:
+          type: integer
+          description: Jobs aguardando processamento
+          example: 2
+        active:
+          type: integer
+          description: Jobs sendo processados
+          example: 1
+        completed:
+          type: integer
+          description: Jobs completados
+          example: 45
+        failed:
+          type: integer
+          description: Jobs que falharam
+          example: 3
+        delayed:
+          type: integer
+          description: Jobs atrasados
+          example: 0
+        total:
+          type: integer
+          description: Total de jobs
+          example: 51
+
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          example: 400
+        message:
+          type: string
+          example: "Validation failed"
+        error:
+          type: string
+          example: "Bad Request"
+
+  securitySchemes:
+    ApiKeyHeader:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: |
+        API Key enviada no header `X-API-Key`
+
+        Exemplo: `X-API-Key: sua-api-key-aqui`
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: |
+        API Key enviada como Bearer token
+
+        Exemplo: `Authorization: Bearer sua-api-key-aqui`
+    ApiKeyQuery:
+      type: apiKey
+      in: query
+      name: api_key
+      description: |
+        API Key enviada como query parameter
+
+        Exemplo: `?api_key=sua-api-key-aqui`
+
+        ⚠️ Não recomendado para produção
+
+security:
+  - ApiKeyHeader: []
+  - BearerAuth: []
+  - ApiKeyQuery: []
+
+x-tagGroups:
+  - name: Recomendações
+    tags:
+      - CPF Recommendations
+  - name: Gerenciamento
+    tags:
+      - Job Status

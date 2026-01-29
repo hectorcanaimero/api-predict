@@ -1,0 +1,59 @@
+### Variables
+@baseUrl = http://localhost:3000
+@jobId = 1
+
+### Health Check
+GET {{baseUrl}}/
+
+###
+### Iniciar un nuevo job de scraping
+POST {{baseUrl}}/api/scraping/start
+Content-Type: application/json
+
+{
+  "url": "https://extend.emarsys.com/products/recommended",
+  "username": "usuario@example.com",
+  "password": "password123",
+  "maxProducts": 50,
+  "timeout": 30000,
+  "headless": true,
+  "useCache": true
+}
+
+###
+### Iniciar scraping sin credenciales (usando las del .env)
+POST {{baseUrl}}/api/scraping/start
+Content-Type: application/json
+
+{
+  "maxProducts": 100,
+  "headless": true
+}
+
+###
+### Obtener estado de un job específico
+GET {{baseUrl}}/api/scraping/jobs/{{jobId}}
+
+###
+### Listar todos los jobs
+GET {{baseUrl}}/api/scraping/jobs
+
+###
+### Obtener estadísticas de la cola
+GET {{baseUrl}}/api/scraping/stats
+
+###
+### Reintentar un job fallido
+POST {{baseUrl}}/api/scraping/jobs/{{jobId}}/retry
+
+###
+### Cancelar un job
+DELETE {{baseUrl}}/api/scraping/jobs/{{jobId}}
+
+###
+### Limpiar jobs completados y fallidos
+DELETE {{baseUrl}}/api/scraping/jobs/completed/clear
+
+###
+### Ver documentación Swagger
+GET {{baseUrl}}/api/docs

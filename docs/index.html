@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Documentação da API de Recomendações por CPF - Emarsys Scarab"
+    />
+    <title>API Recomendações CPF - Emarsys</title>
+
+    <!-- Redoc doesn't change outer page styles -->
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      }
+
+      .page-header {
+        background: linear-gradient(135deg, #32329f 0%, #5353c7 100%);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .page-header h1 {
+        margin: 0;
+        font-size: 2rem;
+        font-weight: 700;
+      }
+
+      .page-header p {
+        margin: 0.5rem 0 0;
+        opacity: 0.9;
+        font-size: 1.1rem;
+      }
+
+      .badges {
+        margin-top: 1rem;
+        display: flex;
+        gap: 0.5rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .badge {
+        display: inline-block;
+        padding: 0.4rem 0.8rem;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 500;
+      }
+
+      .quick-links {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        text-align: center;
+        border-bottom: 1px solid #dee2e6;
+      }
+
+      .quick-links a {
+        display: inline-block;
+        margin: 0 1rem;
+        padding: 0.5rem 1.5rem;
+        background: #32329f;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: 500;
+        transition: background 0.3s;
+      }
+
+      .quick-links a:hover {
+        background: #5353c7;
+      }
+
+      #redoc-container {
+        min-height: calc(100vh - 200px);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Custom Header -->
+    <div class="page-header">
+      <h1>🎯 API de Recomendações por CPF</h1>
+      <p>Emarsys Scarab - Recomendações Personalizadas de Produtos</p>
+      <div class="badges">
+        <span class="badge">✨ Versão 1.0.0</span>
+        <span class="badge">🚀 CPF-based</span>
+        <span class="badge">⚡ Async Jobs</span>
+        <span class="badge">💾 Smart Cache</span>
+      </div>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="quick-links">
+      <a href="https://github.com/seu-repo" target="_blank">📚 GitHub</a>
+      <a href="../FLUJO_CPF_70653456298.md" target="_blank">📖 Guia CPF</a>
+      <a href="http://localhost:3000/api/docs" target="_blank">🔄 Swagger API</a>
+    </div>
+
+    <!-- Redoc Container -->
+    <div id="redoc-container"></div>
+
+    <!-- Redoc Script -->
+    <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"></script>
+    <script>
+      // Initialize Redoc
+      Redoc.init(
+        'openapi-cpf.yaml',
+        {
+          scrollYOffset: 50,
+          hideDownloadButton: false,
+          expandResponses: '200,201,202',
+          requiredPropsFirst: true,
+          sortPropsAlphabetically: false,
+          showExtensions: true,
+          nativeScrollbars: false,
+          pathInMiddlePanel: true,
+          theme: {
+            colors: {
+              primary: {
+                main: '#32329f',
+              },
+              success: {
+                main: '#00aa13',
+              },
+            },
+            typography: {
+              fontSize: '16px',
+              fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+              headings: {
+                fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                fontWeight: '700',
+              },
+            },
+            sidebar: {
+              backgroundColor: '#fafafa',
+              textColor: '#333333',
+              activeTextColor: '#32329f',
+            },
+            rightPanel: {
+              backgroundColor: '#263238',
+            },
+          },
+        },
+        document.getElementById('redoc-container')
+      );
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+  </body>
+</html>
